@@ -1,3 +1,5 @@
+// ======== Header Functions =================
+
 searchIcon.addEventListener('click', function (e) {
     e.stopPropagation();
     searchInput.classList.toggle('active');
@@ -26,3 +28,5 @@ navLinks.forEach(link => {
         nav.classList.remove('active');
     });
 });
+
+//=

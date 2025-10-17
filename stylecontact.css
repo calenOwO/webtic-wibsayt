@@ -5,17 +5,10 @@
 }
 
 body {
-  background-color: #FFAE34;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  /*padding-top: 100px;*/
-}
+  padding-top: 100px;
 
-/*body img
-{
-  background-size: cover no-repeat;
-  height: 100%;
-  width: 100%;
-}*/
+}
 
 /*================================= HEADER CONTENT ================================*/
 header {
@@ -24,14 +17,13 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 1000;
-  /* Keeps header above other content */
+  z-index: 1000; /* Keeps header above other content */
   transition: all 0.3s ease;
 }
 
@@ -139,98 +131,6 @@ nav ul li a:hover {
   color: #999;
 }
 
-/*===== CONTENT SECTION ======*/
-.hero {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #FFAE43;
-  color: #fff;
-  padding: 60px 100px;
-  flex-wrap: wrap;
-  overflow: hidden; /* ensures paws don’t overflow edges */
-}
-
-.hero::before,
-.hero::after {
-  content: "";
-  position: absolute;
-  background: url("pictures/PAW__2_-removebg-preview.png") no-repeat center/contain;
-  opacity: 0.15; /* faded effect */
-  z-index: 0;
-  width: 200px;
-  height: 200px;
-}
-
-.hero::before {
-  top: 20%;
-  left: 45%;
-}
-
-.hero::after {
-  bottom: 10%;
-  right: 20%;
-}
-
-.hero-content {
-  flex: 1;
-  max-width: 500px;
-  position: relative;
-  z-index: 1;
-}
-
-.hero-content h2 {
-  font-size: 3rem;
-  line-height: 1.2;
-  margin-bottom: 15px;
-  font-family: 'Trebuchet MS', sans-serif;
-}
-
-.hero-content h2 span {
-  color: #fff;
-  text-shadow: 2px 2px #d97e00;
-  font-weight: bold;
-}
-
-.hero-content p {
-  font-size: 1.1rem;
-  margin-bottom: 25px;
-  color: #2c2c2c;
-}
-
-.hero-btn {
-  background-color: #1E1E1E;
-  color: #fff;
-  padding: 12px 30px;
-  border: none;
-  border-radius: 25px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.hero-btn:hover {
-  background-color: #fff;
-  color: #1E1E1E;
-}
-
-/* HERO IMAGE */
-.hero-image {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  z-index: 1;
-}
-
-.hero-image img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-
-
 
 /* ==================== RESPONSIVE STYLES ==================== */
 /* Desktop (1200px and above) - Default styles already applied */
@@ -290,12 +190,12 @@ nav ul li a:hover {
   /* Show hamburger menu */
   .hamburger {
     display: block;
-    order: 1;
+    order: 1;  
   }
 
   /* Reorder items */
   .logo {
-    order: 2;
+    order: 2;  
   }
 
   .icons {
