@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PawTopia | Products Page</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawTopia | Products Page</title>
+  <link rel="icon" type="img/png" href="pictures/pawicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
 
 <body>
-  <nav>
-    <div class="nav-left">
-      <div class="logo">
-        <img src="HomePageImg/logo2.png" alt="Pawtopia Logo">
-      </div>
-      <div class="search-bar">
-        <input type="text" placeholder="Search" />
-      </div>
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="pictures/logotransparent.png" alt="PawTopia logo">
+      </a>
+    </div>
+    
+    <div class="hamburger" id="hamburger">
+      <img src="pictures/hamburger.png" alt="Menu">
     </div>
 
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="cart.html">Cart</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </nav>
+    <nav id="nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="icons">
+      <div class="search-container">
+          <img src="pictures/searchicon.png" id="searchIcon">
+          <input type="text" id="searchInput" placeholder="Search...">
+      </div>
+      <a href="cart.html"><img src="pictures/carticon.png"></a>
+     </div>
+  </header>
+  <!-- START BELOW CONTENT -->
+
+
+
+
+
+
+
+
+  
+  <script src="script.js"></script>
+</body>
 </html>
