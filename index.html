@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- PawTopia - index.html (Home page) -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -11,7 +12,7 @@
 </head>
 
 <body>
-  <!--- HEADER --->
+ <!--- HEADER --->
   <header>
     <div class="logo">
       <a href="index.html">
@@ -23,14 +24,14 @@
       <img src="pictures/hamburger.png" alt="Menu">
     </div>
 
-    <nav id="nav">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="products.html">Products</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+<nav id="nav">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
 
     <div class="icons">
       <div class="search-container">
@@ -54,15 +55,15 @@
   </header>
 
   <!-- START HERE CONTENT BELOW -->
+   <!--HERO SECTION-->
   <section class="hero">
-    </div>
     <div class="hero-content">
       <div class="hero-left">
         <h1>WHERE</h1>
         <h1 class="paws-text">PAWS</h1>
         <h1>MEET<br>PARADISE</h1>
         <p class="subtitle">From treats to toys, find your pet's joy.</p>
-        <button class="shop-btn">shop now</button>
+        <a href="products.html" class="shop-btn">SHOP NOW</a>
       </div>
 
       <div class="hero-right">
@@ -71,159 +72,258 @@
     </div>
   </section>
 
+  <!--CATEGORIES SECTION-->
   <section class="top-categories">
-    <h2 style="color: #FFAE43">Top <span style="color: black">Categories</span></h2>
-
-    <div class="categories-container">
-      <button class="scroll-btn left">
-        < </button>
-
+     <h2 style="text-align: center; font-size: 32px; font-weight: 700;"><span style="color: #FFAE43">TOP</span> <span style="color: black">CATEGORIES</span></h2>
           <div class="categories-wrapper">
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 1</h3>
+            <div class="category-card" role="button" tabindex="0" onclick="window.location.href='products.html?filter=drydogfood'">
+              <img src="pictures/products/drydogfood1.png" alt="Dry Dog Food">
+              <h3>Dry Dog Food</h3>
             </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 2</h3>
+            <div class="category-card" role="button" tabindex="0" onclick="window.location.href='products.html?filter=drycatfood'">
+              <img src="pictures/products/dfcmonello.png" alt="Dry Cat Food">
+              <h3>Dry Cat Food</h3>
             </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 3</h3>
+            <div class="category-card" role="button" tabindex="0" onclick="window.location.href='products.html?filter=supplies'">
+              <img src="pictures/products/supplies1.png" alt="Pet Supplies">
+              <h3>Pet Supplies</h3>
             </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 4</h3>
+            <div class="category-card" role="button" tabindex="0" onclick="window.location.href='products.html?filter=supplements'">
+              <img src="pictures/products/supplements1.png" alt="Pet Supplements">
+              <h3>Pet Supplements</h3>
             </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 5</h3>
+            <div class="category-card" role="button" tabindex="0" onclick="window.location.href='products.html?filter=toys'">
+              <img src="pictures/products/toys1.png" alt="Pet Toys">
+              <h3>Pet Toys</h3>
             </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 6</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 7</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 8</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 9</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 10</h3>
-            </div>
-          </div>
-
-          <button class="scroll-btn right"> > </button>
-
     </div>
+
+    <!--BANNER SECTION-->
     <div class="banner">
-      <img src="https://i.pinimg.com/736x/58/a8/cc/58a8cce08e4193a25a05b0e4f045fa66.jpg"
-        alt="Might be an image of a banner">
+      <img src="pictures/homebanner.png" alt="banner">
+      <a href="products.html" class="shop-now-btn">SHOP NOW</a>
     </div>
 
-    <h2 style="color: #FFAE43">Best <span style="color: black">Sellers</span></h2>
+    <!--BEST SELLER-->
+      <section class="best-sellers-section">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header" style="text-align: center; justify-content: center;">
+         <h2 class="section-title" style="text-align: center; margin: 0 auto; font-size: 32px; font-weight: 700;">
+                    <span style="color: #FFAE43">BEST</span> <span style="color: black">SELLERS</span>
+                </h2>
+                <a href="products.html" class="view-all-link">View All</a>
+            </div>
 
-    <div class="categories-container">
-      <button class="scroll-btn left">
-        < </button>
+            <!-- Carousel -->
+            <div id="bestSellersCarousel" class="carousel slide carousel-container" data-bs-ride="false">
+                <div class="carousel-inner">
+                    
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <div class="row">
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/4ecdc4/ffffff?text=Product+2" alt="Product" class="product-image">
+                                        <p class="product-category">Food</p>
+                                        <h3 class="product-name">Gud Dog Food 2.5kg</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 950.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
 
-          <div class="categories-wrapper">
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 1</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 2</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 3</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 4</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 5</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 6</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 7</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 8</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 9</h3>
-            </div>
-            <div class="category-card"><img
-                src="https://ih1.redbubble.net/image.4569092814.2878/raf,750x1000,075,t,fafafa:ca443f4786.jpg">
-              <h3>Category 10</h3>
-            </div>
-          </div>
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/4ecdc4/ffffff?text=Product+2" alt="Product" class="product-image">
+                                        <p class="product-category">Food</p>
+                                        <h3 class="product-name">VitaPlus Adult Dog Food 2kg</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 1,350.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
 
-          <button class="scroll-btn right"> > </button>
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/95a5a6/ffffff?text=Product+3" alt="Product" class="product-image">
+                                        <p class="product-category">Food</p>
+                                        <h3 class="product-name">Monello Kitten Dry Food 200g</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 115.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
 
-          <script src="script.js"></script>
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/9b59b6/ffffff?text=Product+4" alt="Product" class="product-image">
+                                        <p class="product-category">Treats</p>
+                                        <h3 class="product-name">Halo Meat Bites</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 75.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 (Add more products as needed) -->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/e74c3c/ffffff?text=Product+5" alt="Product" class="product-image">
+                                        <p class="product-category">Food</p>
+                                        <h3 class="product-name">Premium Cat Food 1kg</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 850.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/3498db/ffffff?text=Product+6" alt="Product" class="product-image">
+                                        <p class="product-category">Treats</p>
+                                        <h3 class="product-name">Dog Treats Pack</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 250.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/2ecc71/ffffff?text=Product+7" alt="Product" class="product-image">
+                                        <p class="product-category">Food</p>
+                                        <h3 class="product-name">Puppy Food 3kg</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 1,800.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-6 col-lg-3 mb-4">
+                                <div class="product-card">
+                                    <div>
+                                        <img src="https://via.placeholder.com/200x180/f39c12/ffffff?text=Product+8" alt="Product" class="product-image">
+                                        <p class="product-category">Treats</p>
+                                        <h3 class="product-name">Cat Treats Special</h3>
+                                    </div>
+                                    <div>
+                                        <p class="product-price">₱ 120.00</p>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#bestSellersCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#bestSellersCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
   </section>
 
-  <section class="just-title">
-    <h2 style="color: #FFAE43">Latest <span style="color: black">Articles</span></h2>
-  </section>
-
-
-  <section class="latest-articles">
-    <div class="article-card">
-      <div class="article-image"></div>
-      <div class="article-content">
-        <h3>DID YOU KNOW?</h3>
-        <p class="source">
-          Source: <a href="http://petshop.com//086547601//waylami">http://petshop.com//086547601//waylami</a><br>
-          October 18, 2025 • 8:14 PM
-        </p>
-        <p class="description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at ipsum vitae lacus lobortis lacinia.
-          Donec tristique arcu massa, at facilisis lorem porta sed.
-        </p>
-        <button class="learn-more">Learn More</button>
+  <section class="section-title py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+            <h2 style="text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 30px;"><span style="color: #FFAE43">LATEST</span> <span style="color: black">ARTICLES</span></h2>
+        </div>
       </div>
     </div>
+  </section>
 
+  <section class="articles-grid pb-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6 col-12">
+          <a href="https://bevkaye.com/blog/what-our-dogs-teach-us-about-love" target="_blank" style="text-decoration: none; color: inherit;">
+            <article class="article-card">
+              <div class="article-image">
+                <img src="pictures/article1.jpg" alt="Family with golden retriever" class="img-fluid">
+              </div>
+              <div class="article-content">
+                <h3 class="article-title">What Dogs Teach Us About Love</h3>
+                <p class="article-meta">Pet Care • BevK&Co • October 21, 2025</p>
+              </div>
+            </article>
+          </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12">
+          <a href="https://www.thesprucepets.com/steps-to-train-your-dog-1118273" target="_blank" style="text-decoration: none; color: inherit;">
+            <article class="article-card">
+              <div class="article-image">
+                <img src="pictures/article2.jpg" alt="Dog training" class="img-fluid">
+              </div>
+              <div class="article-content">
+                <h3 class="article-title">Train Your Dog Like a Pro</h3>
+                <p class="article-meta">Pet Training • thesprucepets • October 19, 2025</p>
+              </div>
+            </article>
+          </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12">
+          <a href="https://www.cattownoakland.org/cat-town-blog/2021/04/calico-cat-facts-to-know" target="_blank" style="text-decoration: none; color: inherit;">
+            <article class="article-card">
+              <div class="article-image">
+                <img src="pictures/article3.jpg" alt="Calico cat" class="img-fluid">
+              </div>
+              <div class="article-content">
+                <h3 class="article-title">Calico Cats Facts To Know</h3>
+                <p class="article-meta">Pet Facts • CatTown • October 19, 2025</p>
+              </div>
+            </article>
+          </a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="popular-brands">
-    <h2 style="color: #FFAE43">Popular <span style="color: black">Brands</span></h2>
+    <h2 style="text-align: center; font-size: 32px; font-weight: 700;"><span style="color: #FFAE43">POPULAR</span> <span style="color: black">BRANDS</span></h2>
 
     <div class="brand-grid">
-      <div class="brand-box"><img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv1OJ_0UmWrCck2uUwt5UUQOM_wgYLdwkkvd-6kkzn9GP-hMP7W0XgRDIptekonUYUkOY&usqp=CAU"
-          alt="might be a dog"></div>
-      <div class="brand-box"><img src="https://media.tenor.com/1lHhlSAd-CAAAAAM/good-talk.gif" alt="Dogs Plus"></div>
-      <div class="brand-box"><img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYnUSONpfKuWSSG0MM5SOJo4YiBfk5kMjFkw&s"
-          alt="Dogs Plus"></div>
-      <div class="brand-box"><img
-          src="https://scontent.fceb2-1.fna.fbcdn.net/v/t39.30808-6/560265067_1323932055877976_5263210087016704140_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=tTcVP22hCocQ7kNvwE58eu3&_nc_oc=AdlkuXZ7xEIdXbCyxeqtqZMaokLowfzau6Iz6p7CHrZEZ86XwZ0yE3NjhFPa33cbRNY&_nc_zt=23&_nc_ht=scontent.fceb2-1.fna&_nc_gid=pWho5-tpysfTcRRjofZh4A&oh=00_AfeSwV3TWqN_7YSlXUdQFn0cu4GDiTS99vLzFEUmomL5Kw&oe=68FA9181"
-          alt="Dogs Plus"></div>
-      <div class="brand-box"><img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSztxMsQXV42HxjI9Qt3vbzfo8ACoP8gDm4RQ&s"
-          alt="Dogs Plus"></div>
+      <div class="brand-box"><img src="pictures/pedigreelogo.png" alt="Pedigree Logo"></div>
+      <div class="brand-box"><img src="pictures/royalcaninlogo.png" alt="Royal Canin Logo"></div>
+      <div class="brand-box"><img src="pictures/purinalogo.png" alt="Purina Logo"></div>
+      <div class="brand-box"><img src="pictures/whiskaslogo.png" alt="Whiskas Logo"></div>
+      <div class="brand-box"><img src="pictures/orijenlogo.png" alt="Orijens Plus"></div>
     </div>
   </section>
 
@@ -233,7 +333,7 @@
       <div class="footer-left">
         <img src="pictures/logotransparent.png" alt="PawTopia logo" class="footer-logo">
         <p>If you have any questions, please <br>contact us at
-          <a href="mailto:support@example.com">support@example.com</a>
+          <a href="https://matias.me/nsfw">pawtopia@example.com</a>
         </p>
         <div class="social-icons">
           <a href="https://x.com/?lang=en">
@@ -249,15 +349,15 @@
             <img src="pictures/linkedin.png" alt="LinkedIn">
           </a>
         </div>
-        <p>&copy; 2025 PawTopia. All rights reserved.</p>
+        <p>&copy; 2025 Pawtopia. All rights reserved.</p>
       </div>
 
       <div class="footer-right">
         <div class="footer-column">
           <h3>Shop now</h3>
           <ul>
-            <li><a href="#">Dog</a></li>
-            <li><a href="#">Cat</a></li>
+            <li><a href="products.html?category=dog">Dog</a></li>
+            <li><a href="products.html?category=cat">Cat</a></li>
           </ul>
         </div>
 

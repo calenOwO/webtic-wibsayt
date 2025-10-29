@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* PawTopia - stylecontact.css (Contact page styles) */
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +10,7 @@
 }
 
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  padding-top: 100px;
+  font-family: 'Poppins', sans-serif;
 
 }
 
@@ -203,26 +207,200 @@ nav ul li a:hover {
   box-shadow: 0 4px 12px rgba(255, 167, 38, 0.4);
 }
 
+
 /*==================== CONTACT CONTENT==================*/
+/* Contact SECTION */
+.contact-hero {
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+  background: transparent;
+}
+
+.contact-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1E1E1E;
+  margin-bottom: 0.5rem;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+}
+
+.contact-hero p {
+  color: #666;
+  font-size: 1rem;
+}
 
 
+/* FAQ SECTION */
+.faq-section {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
+.faq-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
 
+.faq-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
 
+.flip-card {
+  perspective: 1000px;
+  height: 200px;
+}
 
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
 
+.flip-card:hover .flip-inner {
+  transform: rotateY(180deg);
+}
 
+.flip-front,
+.flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+.flip-front.orange,
+.flip-back.orange {
+  background-color: #f5a623;
+  color: white;
+}
 
+.flip-front.gray,
+.flip-back.gray {
+  background-color: #7d7d7d;
+  color: white;
+}
 
+.flip-back {
+  transform: rotateY(180deg);
+}
 
+/* Help Section */
+.help-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
 
+.help-title {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+}
 
+.help-form {
+  background: white;
+  padding: 2.5rem;
+  /*border-radius: 8px;*/
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.help-form input[type="text"],
+.help-form input[type="email"],
+.help-form textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.help-form textarea {
+  min-height: 150px;
+  resize: vertical;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-row input[type="checkbox"] {
+  margin-top: 0.25rem;
+  cursor: pointer;
+}
+
+.checkbox-row label {
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+}
+
+.help-form button {
+  width: 100%;
+  max-width: 200px;
+  display: block;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.help-form button:hover {
+  background-color: #555;
+}
+
+#thankYouMessage {
+  text-align: center;
+  color: #f5a623;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.hidden {
+  display: none;
+}
 
 
 /*===== FOOTER =====*/
-.footer
-{
+.footer {
   background-color: #1E1E1E;
   padding: 40px 60px;
   margin: 0;
@@ -230,25 +408,24 @@ nav ul li a:hover {
   box-sizing: border-box;
 }
 
-.footer-content
-{
+.footer-content {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;  /* Changed from center */
-  align-items: flex-start;  /* Changed from center */
+  justify-content: space-between;
+  /* Changed from center */
+  align-items: flex-start;
+  /* Changed from center */
   gap: 60px;
   color: white;
 }
 
-.footer-content p
-{
+.footer-content p {
   font-size: 14px;
   color: white;
 }
 
-.footer img
-{
+.footer img {
   height: 50px;
 }
 
@@ -268,7 +445,8 @@ nav ul li a:hover {
 
 .footer a,
 .footer-content a {
-  color: #FFAE34 !important; /* footer links are orange */
+  color: #FFAE34 !important;
+  /* footer links are orange */
   text-decoration: none;
 }
 
@@ -397,14 +575,23 @@ nav ul li a:hover {
     font-size: 15px;
   }
 
-  /*Contact Content (wala pa)*/
+  /*Contact Content*/
+  .faq-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 
+  .contact-hero h1 {
+    font-size: 2.2rem;
+    letter-spacing: 6px;
+  }
 
-
-
+  .faq-section {
+    padding: 2.5rem 1.5rem;
+  }
 
   /*Footer*/
-   .footer {
+  .footer {
     padding: 35px 40px;
   }
 
@@ -439,11 +626,12 @@ nav ul li a:hover {
 
   .footer-column ul li a {
     font-size: 12px;
-}
+  }
 }
 
 /* Tablet (768px - 991px) */
 @media screen and (max-width: 991px) {
+
   /*Header*/
   header {
     padding: 15px 30px;
@@ -481,16 +669,54 @@ nav ul li a:hover {
     font-size: 15px;
   }
 
-  /*Contact Content (wala pa)*/
+  /*Contact Content*/
+  .contact-hero {
+    padding: 2.5rem 1.5rem 1.5rem;
+  }
 
+  .contact-hero h1 {
+    font-size: 2rem;
+    letter-spacing: 5px;
+  }
 
+  .contact-hero p {
+    font-size: 0.95rem;
+  }
 
+  .faq-section {
+    padding: 2rem 1.5rem;
+  }
 
+  .faq-title {
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+  }
 
+  .faq-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 
+  .flip-card {
+    height: 180px;
+  }
+
+  .flip-front,
+  .flip-back {
+    font-size: 0.9rem;
+    padding: 1.2rem;
+  }
+
+  .help-form {
+    padding: 2rem;
+  }
+
+  .form-row {
+    gap: 1.2rem;
+  }
 
   /*Footer*/
-  .footer{
+  .footer {
     padding: 30px 30px;
   }
 
@@ -548,6 +774,7 @@ nav ul li a:hover {
 
 /* Mobile (up to 767px) */
 @media screen and (max-width: 767px) {
+
   /*Header*/
   header {
     padding: 15px 20px;
@@ -644,14 +871,86 @@ nav ul li a:hover {
     padding: 10px;
   }
 
-  /*Contact Content (wala pa)*/
+  /*Contact Content*/
+  .contact-hero {
+    padding: 2rem 1rem 1rem;
+  }
 
+  .contact-hero h1 {
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+  }
 
+  .contact-hero p {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
 
+  .faq-section {
+    padding: 2rem 1rem;
+  }
 
+  .faq-title {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .faq-container {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .flip-card {
+    height: 160px;
+  }
+
+  .flip-front,
+  .flip-back {
+    font-size: 0.85rem;
+    padding: 1rem;
+  }
+
+  .help-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .help-title {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .help-form {
+    padding: 1.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .help-form textarea {
+    min-height: 120px;
+    margin-bottom: 1rem;
+  }
+
+  .checkbox-row {
+    margin-bottom: 1.2rem;
+  }
+
+  .checkbox-row label {
+    font-size: 0.8rem;
+  }
+
+  .help-form button {
+    max-width: 100%;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+  }
 
   /*Footer*/
-    .footer {
+  .footer {
     padding: 25px 20px;
   }
 

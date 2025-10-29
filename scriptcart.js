@@ -1,0 +1,392 @@
+// PawTopia - scriptcart.js (Cart page: dynamic cart table, coupon handling, checkout modal, and reviews scroller)
+// ========= Dynamic Cart (table-based) =========
+(function() {
+  const CART_KEY = 'pt-cart:v1';
+  const COUPON_CODE = 'B3B0T4CT37';
+  const COUPON_DISCOUNT_RATE = 0.99; // 99% off as requested
+  const tbody = document.getElementById('cartTbody');
+  const subtotalEl = document.getElementById('subtotal');
+  const discountEl = document.getElementById('discount');
+  const totalEl = document.getElementById('total');
+  const couponInputEl = document.getElementById('couponInput');
+  const checkoutBtn = document.querySelector('.checkout-btn');
+
+  // Keep coupon application in-memory only for this session and page load
+  let appliedCoupon = '';
+
+  function loadCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch (_) { return []; }
+  }
+  function saveCart(items) {
+    try { localStorage.setItem(CART_KEY, JSON.stringify(items)); } catch (_) {}
+    try { window.dispatchEvent(new CustomEvent('cartUpdated')); } catch (_) {}
+  }
+  function peso(n) {
+    const num = Number(n) || 0;
+    return `₱ ${num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  function computeDiscount(subtotal) {
+    const code = appliedCoupon;
+    if (!code) return 0;
+    // Only the specific code applies a flat 10% off
+    if (code.toUpperCase() === COUPON_CODE) {
+      return Math.max(0, Math.round(subtotal * COUPON_DISCOUNT_RATE * 100) / 100);
+    }
+    return 0;
+  }
+
+  function render() {
+    const items = loadCart();
+    tbody.innerHTML = '';
+    if (!items.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 4;
+      td.innerHTML = '<div class="text-center py-4">Your cart is empty. <a class="continue-shopping-link" href="products.html">Continue shopping</a></div>';
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      subtotalEl.textContent = '₱ 0.00';
+      discountEl.textContent = '₱ 0.00';
+      totalEl.textContent = '₱ 0.00';
+      if (checkoutBtn) checkoutBtn.disabled = true;
+      return;
+    }
+
+  let subtotal = 0;
+    items.forEach(it => {
+      const tr = document.createElement('tr');
+      tr.dataset.slug = it.slug;
+
+      // Product cell
+      const tdProd = document.createElement('td');
+      tdProd.setAttribute('data-label','Product');
+      tdProd.innerHTML = `
+        <div class="product-info">
+          <img src="${it.img}" alt="${it.title}" class="product-image">
+          <div class="product-details">
+            <h3>${it.title}</h3>
+            <p class="product-price">${it.priceText || peso(it.price)}</p>
+          </div>
+        </div>`;
+
+      // Quantity cell
+      const tdQty = document.createElement('td');
+      tdQty.setAttribute('data-label','Quantity');
+      tdQty.innerHTML = `
+        <div class="quantity-control">
+          <button class="btn-minus" aria-label="Decrease">-</button>
+          <input type="text" value="${it.qty}" readonly>
+          <button class="btn-plus" aria-label="Increase">+</button>
+        </div>`;
+
+      // Total cell
+      const lineTotal = (Number(it.price) || 0) * (Number(it.qty) || 0);
+      subtotal += lineTotal;
+      const tdTotal = document.createElement('td');
+      tdTotal.setAttribute('data-label','Total');
+      tdTotal.innerHTML = `<span class="item-total">${peso(lineTotal)}</span>`;
+
+      // Remove cell
+      const tdRm = document.createElement('td');
+      tdRm.innerHTML = `<button class="remove-btn" title="Remove">⊗</button>`;
+
+      tr.appendChild(tdProd);
+      tr.appendChild(tdQty);
+      tr.appendChild(tdTotal);
+      tr.appendChild(tdRm);
+      tbody.appendChild(tr);
+
+      // Wire events
+      tdQty.querySelector('.btn-minus').addEventListener('click', () => changeQty(it.slug, -1));
+      tdQty.querySelector('.btn-plus').addEventListener('click', () => changeQty(it.slug, +1));
+      tdRm.querySelector('.remove-btn').addEventListener('click', () => removeItem(it.slug));
+    });
+
+    const discount = computeDiscount(subtotal);
+    const total = Math.max(0, subtotal - discount);
+    subtotalEl.textContent = peso(subtotal);
+    discountEl.textContent = peso(discount);
+    totalEl.textContent = peso(total);
+    // Do not auto-fill or auto-apply coupon on render; user must click Apply
+    if (checkoutBtn) checkoutBtn.disabled = false;
+  }
+
+  function changeQty(slug, delta) {
+    const items = loadCart();
+    const idx = items.findIndex(x => x.slug === slug);
+    if (idx < 0) return;
+    items[idx].qty = Math.max(1, (Number(items[idx].qty) || 1) + delta);
+    saveCart(items);
+    render();
+  }
+  function removeItem(slug) {
+    let items = loadCart();
+    items = items.filter(x => x.slug !== slug);
+    saveCart(items);
+    render();
+  }
+
+  // Expose coupon/checkout handlers referenced by HTML
+  window.applyCoupon = function applyCoupon() {
+    const raw = (couponInputEl?.value || '').trim();
+    if (!raw) {
+      if (typeof window.showToast === 'function') window.showToast('Enter a coupon code.');
+      return;
+    }
+    if (raw.toUpperCase() === COUPON_CODE) {
+      appliedCoupon = COUPON_CODE;
+      render();
+      if (typeof window.showToast === 'function') window.showToast('Coupon applied: 99% off');
+    } else {
+      appliedCoupon = '';
+      render();
+      if (typeof window.showToast === 'function') window.showToast('Invalid coupon code');
+    }
+  };
+  window.removeCoupon = function removeCoupon() {
+    if (!appliedCoupon) {
+      if (typeof window.showToast === 'function') window.showToast('No coupon to remove');
+      return;
+    }
+    appliedCoupon = '';
+    if (couponInputEl) couponInputEl.value = '';
+    render();
+    if (typeof window.showToast === 'function') window.showToast('Coupon removed');
+  };
+  window.checkout = function checkout() {
+    // Show a simple Bootstrap modal saying checked out
+    let modalEl = document.getElementById('checkoutModal');
+    if (!modalEl) {
+      modalEl = document.createElement('div');
+      modalEl.id = 'checkoutModal';
+      modalEl.className = 'modal fade';
+      modalEl.tabIndex = -1;
+      modalEl.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Checkout</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Item has been checked out.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>`;
+      document.body.appendChild(modalEl);
+    }
+    try {
+      if (window.bootstrap?.Modal) {
+        const m = window.bootstrap.Modal.getOrCreateInstance(modalEl, { backdrop: true, keyboard: true });
+        m.show();
+      } else {
+        // Fallback if Bootstrap JS not available
+        alert('Item has been checked out.');
+      }
+    } catch (_) {
+      alert('Item has been checked out.');
+    }
+  };
+
+  // Add-to-cart from recently viewed widgets on this page
+  function slugify(s){return (s||'').toString().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
+  document.querySelectorAll('.recently-viewed .product-card .add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const card = e.currentTarget.closest('.product-card');
+      const title = card.querySelector('h3')?.textContent?.trim() || 'Item';
+      const priceText = card.querySelector('.price')?.textContent?.trim() || '₱ 0.00';
+      const price = parseFloat(priceText.replace(/[^0-9.\-]+/g, '')) || 0;
+      const img = card.querySelector('img')?.getAttribute('src') || '';
+      const slug = slugify(title);
+      const items = loadCart();
+      const idx = items.findIndex(x => x.slug === slug);
+      if (idx >= 0) items[idx].qty += 1; else items.push({ slug, title, price, priceText, img, qty: 1 });
+      saveCart(items);
+      render();
+      if (typeof window.showToast === 'function') window.showToast(`Added "${title}" to cart`);
+    });
+  });
+
+  // React to updates from other pages/tabs
+  window.addEventListener('cartUpdated', render);
+  window.addEventListener('storage', (e) => { if (e.key === CART_KEY) render(); });
+
+  // Initial render
+  render();
+})();
+
+// ================== RECENT REVIEWS (continuous scroll) ==================
+document.addEventListener('DOMContentLoaded', function() {
+  const track = document.getElementById('cartReviewsTrack');
+  if (!track) return;
+
+  // Ratings utilities (persisted per product key in localStorage)
+  const RATING_PREFIX = 'pt-rating:';
+  function roundToHalf(n) { return Math.round(n * 2) / 2; }
+  function ratingKeyForProduct(title, img) {
+    return (title || img || '').toLowerCase();
+  }
+  function getOrCreateRating(key) {
+    try {
+      const saved = localStorage.getItem(RATING_PREFIX + key);
+      if (saved) return JSON.parse(saved);
+    } catch (_) {}
+    const base = 3.5 + Math.random() * 1.5; // 3.5..5.0
+    const rating = Math.min(5, roundToHalf(base));
+    const reviews = Math.floor(25 + Math.random() * 625);
+    const data = { rating, reviews };
+    try { localStorage.setItem(RATING_PREFIX + key, JSON.stringify(data)); } catch (_) {}
+    return data;
+  }
+  function renderStars(rating) {
+    const full = Math.floor(rating);
+    const half = rating - full >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    let html = '';
+    for (let i = 0; i < full; i++) html += '<i class="bi bi-star-fill"></i>';
+    if (half) html += '<i class="bi bi-star-half"></i>';
+    for (let i = 0; i < empty; i++) html += '<i class="bi bi-star"></i>';
+    return html;
+  }
+
+  // Curated product catalog per review pool to guarantee image/title match comment theme
+  const catalog = {
+    dental: [
+      { title: 'Pedigree Dentastix Large', price: '₱115.00', img: 'pictures/products/dtreatsdentastix.png' },
+      { title: 'Purina Dentalife Large', price: '₱130.00', img: 'pictures/products/dtreatsdentalife.png' }
+    ],
+    treats: [
+      { title: 'Sleeky Chewy Stick Snacks', price: '₱140.00', img: 'pictures/products/streatsstick.png' },
+      { title: 'Halo Meal Bites', price: '₱75.00', img: 'pictures/products/streatshalo.png' }
+    ],
+    catFood: [
+      { title: 'Royal Canin Adult Dry Food', price: '₱500.00', img: 'pictures/products/dfcroyalcanin.png' },
+      { title: 'Monello Kitten DryFood 200g', price: '₱220.00', img: 'pictures/products/dfcmonello.png' },
+      { title: 'RC Feline Weight Care', price: '₱325.00', img: 'pictures/products/wetcatfood1.png' },
+      { title: 'Whiskas Chicken Adult', price: '₱250.00', img: 'pictures/products/wetcatfood2.png' }
+    ],
+    dogFood: [
+      { title: 'Orijen Adult Dog Food', price: '₱990.00', img: 'pictures/products/drydogfood2.png' },
+      { title: 'Gud Dog Food 2.5kg', price: '₱1,500.00', img: 'pictures/products/drydogfood1.png' },
+      { title: 'Pedigree Wet Food', price: '₱550.00', img: 'pictures/products/wetdogfood2.png' },
+      { title: 'Yukon Beef Sachet Wet Food', price: '₱150.00', img: 'pictures/products/wetdogfood1.png' }
+    ],
+    toys: [
+      { title: 'Donut-Shaped Pet Chew Toy', price: '₱75.00', img: 'pictures/products/toys2.png' },
+      { title: 'Plush Toys Set', price: '₱190.00', img: 'pictures/products/toys3.png' },
+      { title: 'Whisker Feather Cat Toy', price: '₱150.00', img: 'pictures/products/toys4.png' },
+      { title: 'Mouse Toys (Set of 10)', price: '₱100.00', img: 'pictures/products/toys1.png' }
+    ],
+    accessories: [
+      { title: 'Cocopup Dog Harness', price: '₱790.00', img: 'pictures/products/accdogharness.png' }
+    ],
+    supplies: [
+      { title: 'Dogcat Pet Bed', price: '₱450.00', img: 'pictures/products/supplies1.png' }
+    ],
+    generic: [
+      { title: 'Pet Essentials Bundle', price: '', img: 'pictures/products/supplies1.png' }
+    ]
+  };
+
+  // Tailored comment pools (lightweight)
+  const users = ['Alex M.', 'Jamie S.', 'Renee T.', 'Chris D.', 'Sam P.', 'Jordan K.', 'Taylor R.', 'Morgan L.', 'Casey H.', 'Avery B.', 'Pat G.', 'Drew C.'];
+  const pools = {
+    catFood: [
+      'My cat finishes every bowl now.',
+      'Coat looks shinier after switching.',
+      'Perfect kibble size for my kitty.'
+    ],
+    dogFood: [
+      'Energy up and no tummy issues.',
+      'Picky eater approved—bowl is clean!',
+      'Great protein and kibble size.'
+    ],
+    treats: [
+      'Great for training rewards.',
+      'My pet can’t get enough of these!',
+      'Perfect bite-sized treats.'
+    ],
+    dental: [
+      'Breath is fresher already.',
+      'Tartar build-up reduced a lot.',
+      'Chewy and cleans teeth well.'
+    ],
+    toys: [
+      'Durable and keeps playtime fun.',
+      'Still intact after lots of chewing.',
+      'Instant favorite toy!'
+    ],
+    accessories: [
+      'Fits comfortably and looks great.',
+      'Easy to adjust and very secure.',
+      'Quality materials and hardware.'
+    ],
+    supplies: [
+      'Comfy and easy to clean.',
+      'Well-made and supportive.',
+      'Great value for the quality.'
+    ],
+    generic: [
+      'Exactly as described and great quality.',
+      'Arrived quickly and works as expected.',
+      'Five stars—highly recommend.'
+    ]
+  };
+
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  const poolKeys = ['dental','treats','catFood','dogFood','toys','accessories','supplies'];
+
+  // Create N reviews by picking a pool, then selecting a matching product from catalog
+  const N = 16; // base set length; track will duplicate for seamless scroll
+  const reviews = Array.from({ length: N }, (_, i) => {
+    const key = poolKeys[i % poolKeys.length]; // cycle pools for variety
+    const list = catalog[key] && catalog[key].length ? catalog[key] : catalog.generic;
+    const product = pick(list);
+    const pool = pools[key] || pools.generic;
+    // Ratings
+    const rk = ratingKeyForProduct(product.title, product.img);
+    const { rating, reviews: reviewsCount } = getOrCreateRating(rk);
+    return {
+      title: product.title,
+      price: product.price,
+      img: product.img,
+      comment: pick(pool),
+      user: pick(users),
+      rating,
+      reviewsCount
+    };
+  });
+
+  function cardHTML(r) {
+    return `
+      <div class="card h-100 shadow-sm review-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <img src="${r.img}" alt="${r.title}" class="review-product-img">
+            <div>
+              <div class="fw-semibold">${r.title}</div>
+              ${r.price ? `<div class="review-meta"><span class="text-warning">${r.price}</span></div>` : ''}
+            </div>
+          </div>
+          <div class="product-rating" aria-label="Rated ${(r.rating ?? 5).toFixed(1)} out of 5">
+            <span class="stars">${renderStars(r.rating ?? 5)}</span>
+            <span class="rating-score">${(r.rating ?? 5).toFixed(1)}</span>
+            <span class="rating-reviews">(${r.reviewsCount ?? 100})</span>
+          </div>
+          <p class="review-text mb-2">${r.comment}</p>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-dark">Verified Purchase</span>
+            <span class="review-user">${r.user}</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  const firstPass = reviews.map(cardHTML).join('');
+  // Duplicate content to enable seamless looping (CSS anim translates by 50%)
+  track.innerHTML = firstPass + firstPass;
+});

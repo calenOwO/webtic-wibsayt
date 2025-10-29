@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,12 +8,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="stylecart.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
   <!--- HEADER --->
   <header>
-    <div class="logo">
+     <div class="logo">
       <a href="index.html">
         <img src="pictures/logotransparent.png" alt="PawTopia logo">
       </a>
@@ -53,62 +53,138 @@
       <a href="cart.html"><img src="pictures/carticon.png"></a>
     </div>
   </header>
-  
+
+
   <!-- START HERE CONTENT BELOW -->
+   <!--CART SECTION-->
+ <div class="cart-container">
+    <h1 class="cart-title">PRODUCT CART</h1>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--- FOOTER --->
-<footer class="footer">
-  <div class="footer-content">
-    <div class="footer-left">
-    <img src="pictures/logotransparent.png" alt="PawTopia logo" class="footer-logo">
-    <p>If you have any questions, please <br>contact us at 
-      <a href="mailto:support@example.com">support@example.com</a></p>
-      <div class="social-icons">
-        <a href="https://x.com/?lang=en">
-          <img src="pictures/twittard.png" alt="X">
-        </a>
-        <a href="https://www.facebook.com">
-          <img src="pictures/facebook.png" alt="Facebook">
-        </a>
-        <a href="https://www.instagram.com/?next=%2F">
-          <img src="pictures/instagram.png" alt="Instagram">
-        </a>
-        <a href="https://www.linkedin.com">
-          <img src="pictures/linkedin.png" alt="LinkedIn">
-        </a>
+    <div class="cart-layout">
+      <!-- CART TABLE -->
+      <div class="cart-table-container">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cartTbody">
+            <!-- Dynamic cart rows will be rendered here by scriptcart.js -->
+          </tbody>
+        </table>
       </div>
-    <p>&copy; 2025 PawTopia. All rights reserved.</p>
-    </div>
 
-    <div class="footer-right">
+      <!-- ORDER SUMMARY -->
+      <div class="order-summary">
+        <!-- COUPON SECTION -->
+        <div class="coupon-section">
+          <h3 class="section-title">Coupon</h3>
+          <div class="coupon-input-group">
+            <input type="text" placeholder="Enter coupon code" id="couponInput">
+            <button class="apply-btn" onclick="applyCoupon()">APPLY</button>
+            <button class="apply-btn" style="background:#333" onclick="removeCoupon()">REMOVE</button>
+          </div>
+        </div>
+
+        <!-- ORDER TOTAL SECTION -->
+        <div class="order-total-section">
+          <h3 class="section-title">Order Total</h3>
+          <p class="order-info">Shipping and additional costs are calculated based on values you have entered.</p>
+          
+          <div class="order-row">
+            <span class="order-label">Subtotal:</span>
+            <span class="order-value" id="subtotal">₱ 0.00</span>
+          </div>
+          <div class="order-row">
+            <span class="order-label">Discount:</span>
+            <span class="order-value" id="discount">₱ 0.00</span>
+          </div>
+          <div class="order-row">
+            <span class="total-label">Total:</span>
+            <span class="total-value" id="total">₱ 0.00</span>
+          </div>
+
+          <button class="checkout-btn" onclick="checkout()">CHECK OUT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENTLY VIEWED -->
+  <div class="recently-viewed">
+    <h2>Recently Viewed</h2>
+    <div class="products-grid">
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=300&h=300&fit=crop" alt="King Adult Dog Food">
+        <h3>King Adult Dog Food - All Type Recipe per 2kg</h3>
+        <p class="price">₱ 230.00</p>
+        <button class="add-to-cart-btn">ADD TO CART</button>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=300&h=300&fit=crop" alt="King Adult Dog Food">
+        <h3>King Adult Dog Food - All Type Recipe per 2kg</h3>
+        <p class="price">₱ 230.00</p>
+        <button class="add-to-cart-btn">ADD TO CART</button>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=300&h=300&fit=crop" alt="King Adult Dog Food">
+        <h3>King Adult Dog Food - All Type Recipe per 2kg</h3>
+        <p class="price">₱ 230.00</p>
+        <button class="add-to-cart-btn">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT REVIEWS (continuous horizontal scroller) -->
+  <section class="py-5">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="fw-bold mb-0">Recent Reviews</h3>
+      </div>
+      <div class="review-marquee">
+        <div class="review-track" id="cartReviewsTrack" aria-live="off"></div>
+      </div>
+    </div>
+  </section>
+
+  <!--- FOOTER --->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <img src="pictures/logotransparent.png" alt="PawTopia logo" class="footer-logo">
+        <p>If you have any questions, please <br>contact us at
+          <a href="https://matias.me/nsfw">pawtopia@example.com</a>
+        </p>
+        <div class="social-icons">
+          <a href="https://x.com/?lang=en">
+            <img src="pictures/twittard.png" alt="X">
+          </a>
+          <a href="https://www.facebook.com">
+            <img src="pictures/facebook.png" alt="Facebook">
+          </a>
+          <a href="https://www.instagram.com/?next=%2F">
+            <img src="pictures/instagram.png" alt="Instagram">
+          </a>
+          <a href="https://www.linkedin.com">
+            <img src="pictures/linkedin.png" alt="LinkedIn">
+          </a>
+        </div>
+        <p>&copy; 2025 Pawtopia. All rights reserved.</p>
+      </div>
+
+      <div class="footer-right">
         <div class="footer-column">
           <h3>Shop now</h3>
           <ul>
-            <li><a href="#">Dog</a></li>
-            <li><a href="#">Cat</a></li>
+            <li><a href="products.html?category=dog">Dog</a></li>
+            <li><a href="products.html?category=cat">Cat</a></li>
           </ul>
         </div>
-        
+
         <div class="footer-column">
           <h3>Customer Service</h3>
           <ul>
@@ -118,9 +194,11 @@
         </div>
       </div>
     </div>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
   <script src="script.js"></script>
+  <script src="scriptcart.js"></script>
 </body>
-
 </html>

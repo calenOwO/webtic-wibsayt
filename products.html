@@ -1,16 +1,19 @@
 <!DOCTYPE html>
+<!-- PawTopia - products.html (Products page) -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PawTopia | Products Page</title>
   <link rel="icon" type="img/png" href="pictures/pawicon.png">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="styleproducts.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
-  <!--- HEADER --->
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <a href="index.html">
@@ -52,56 +55,543 @@
     </div>
   </header>
   
-  <!-- START HERE CONTENT BELOW -->
-  <section class="hero">
-  </div>
-    <div class="hero-content">
-      <div class="hero-left">
-        <h1>PRODUCTS PLACEHOLDER PANI</h1>
+  <!-- MAIN CONTENT -->
+  <section class="advertisement">
+  <div id="carouselExample" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="4000" data-bs-wrap="true">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="pictures/carousel1.png" class="d-block w-100" alt="this should work banner but why is it not">
+        </div>
+        <div class="carousel-item">
+          <img src="pictures/carousel2.png" class="d-block w-100" alt="Banner 2">
+        </div>
+        <div class="carousel-item">
+          <img src="pictures/carousel3.png" class="d-block w-100" alt="Banner 2">
+        </div>
+        <div class="carousel-item">
+          <img src="pictures/carousel4.png" class="d-block w-100" alt="Banner 2">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+      <!-- PRODUCT DETAIL MODAL (Bootstrap) -->
+      <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="pmTitle"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="pm-content">
+                <div class="pm-image">
+                  <img id="pmImg" alt="" />
+                </div>
+                <div class="pm-details">
+                  <p class="pm-category" id="pmCategory"></p>
+                  <div class="product-rating" id="pmRating"></div>
+                  <p class="pm-price text-orange" id="pmPrice"></p>
+                  <p class="pm-desc" id="pmDesc"></p>
+                  <button class="btn btn-dark" id="pmAddToCart">ADD TO CART</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="hero-right">
-        <img src="https://media.tenor.com/t3dLLNaI50oAAAAM/cat-cats.gif" alt="Dog and Cat" class="pets-image">
+    <!-- PRODUCT SECTION -->
+  <div class="container product-list my-5" id="productsSection">
+   <h1 class="product-title">PRODUCT</h1>
+      <div class="row">
+        <!-- FILTER SIDEBAR -->
+        <aside class="col-md-3 col-lg-2 mb-4">
+
+          <h5 class="fw-semibold filter-title mb-3">Filter:</h5>
+          <div class="filter-box p-3">
+            <div class="filter-section mb-4">
+  <h6 class="fw-semibold d-flex justify-content-between align-items-center">
+    Product Type
+    <button class="btn btn-link p-0 border-0 shadow-none text-dark"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#productTypeCollapse"
+            aria-expanded="false"
+            aria-controls="productTypeCollapse">
+      <i class="bi bi-chevron-down"></i>
+    </button>
+  </h6>
+
+  <div class="collapse" id="productTypeCollapse">
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="accessories"><label class="form-check-label" for="accessories">Accessories</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="allCatItems"><label class="form-check-label" for="allCatItems">All Cat Items</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="allDogItems"><label class="form-check-label" for="allDogItems">All Dog Items</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="dentalTreats"><label class="form-check-label" for="dentalTreats">Dental Treats</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="dryCatFood"><label class="form-check-label" for="dryCatFood">Dry Cat Food</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="dryDogFood"><label class="form-check-label" for="dryDogFood">Dry Dog Food</label></div>
+    <div class="form-check"><input type="checkbox" class="form-check-input" id="wetCatFood"><label class="form-check-label" for="wetCatFood">Wet Cat Food</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="wetDogFood"><label class="form-check-label" for="wetDogFood">Wet Dog Food</label></div>
+
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="dryCatTreats"><label class="form-check-label" for="dryCatTreats">Cat Treats</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="dryDogTreats"><label class="form-check-label" for="dryDogTreats">Dog Treats</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="supplements"><label class="form-check-label" for="supplements">Supplements</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="supplies"><label class="form-check-label" for="supplies">Supplies</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="toys"><label class="form-check-label" for="toys">Toys</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="trainingTreats"><label class="form-check-label" for="trainingTreats">Training Treats</label></div>
+  <div class="form-check"><input type="checkbox" class="form-check-input" id="treats"><label class="form-check-label" for="treats">Treats</label></div>
+</div>
+</div>
+            <div class="filter-section mb-4">
+      <h6 class="fw-semibold d-flex justify-content-between align-items-center">
+        Brand
+        <button class="btn btn-link p-0 border-0 shadow-none text-dark"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#brandCollapse"
+                aria-expanded="false"
+                aria-controls="brandCollapse">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </h6>
+
+      <div class="collapse" id="brandCollapse">
+        <div class="form-check"><input type="checkbox" class="form-check-input" id="brand1"><label class="form-check-label" for="brand1">Brand 1</label></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" id="brand2"><label class="form-check-label" for="brand2">Brand 2</label></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" id="brand3"><label class="form-check-label" for="brand3">Brand 3</label></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" id="brand4"><label class="form-check-label" for="brand4">Brand 4</label></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" id="brand5"><label class="form-check-label" for="brand5">Brand 5</label></div>
+      </div>
+    </div>
+
+    <!-- PRICE (with arrows removed) -->
+    <div class="filter-section price">
+      <h6 class="fw-semibold d-flex justify-content-between align-items-center">
+        Price
+        <button class="btn btn-link p-0 border-0 shadow-none text-dark"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#priceCollapse"
+                aria-expanded="false"
+                aria-controls="priceCollapse">
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </h6>
+
+      <div class="collapse" id="priceCollapse">
+        <p class="small text-muted">The highest price is <span class="text-orange">₱1,000.00</span></p>
+        <div class="input-group input-group-sm">
+
+          <input type="number" id="priceFrom" class="form-control no-spinner" placeholder="From">
+
+          <input type="number" id="priceTo" class="form-control no-spinner" placeholder="To">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+        <!-- PRODUCT GRID -->
+        <main class="col-md-9 col-lg-10">
+          <div class="d-flex justify-content-between align-items-center mb-3 top-bar">
+            <div class="small text-white" id="showingLabel">Showing products…</div>
+            <div class="d-flex align-items-center gap-2">
+
+              <div class="dropdown ms-2">
+                <button class="btn btn-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Sort by:</button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Featured</a></li>
+                  <li><a class="dropdown-item" href="#">Price: Low to High</a></li>
+                  <li><a class="dropdown-item" href="#">Price: High to Low</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <!-- Product Example -->
+<!-- Product 1 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Cozy washable plush bed with raised sides for security; perfect for small dogs and cats.">
+    <img src="pictures/products/supplies1.png" alt="Dogcat Pet Bed">
+    <p class="text-muted small mb-1">Supplies</p>
+    <p class="fw-semibold mb-1">Dogcat Pet Bed</p>
+    <p class="price fw-bold text-orange">₱450.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 2 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Complete balanced nutrition for kittens with DHA and quality proteins in a handy 200g pack.">
+    <img src="pictures/products/dfcmonello.png" alt="Monello Kitten Dry Food 200g">
+    <p class="text-muted small mb-1">Dry Cat Food</p>
+    <p class="fw-semibold mb-1">Monello Kitten DryFood</p>
+    <p class="price fw-bold text-orange">₱220.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 3 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Premium indoor adult cat kibble formulated for healthy digestion and hairball reduction.">
+    <img src="pictures/products/dfcroyalcanin.png" alt="Royal Canin Indoor Adult Dry Food">
+    <p class="text-muted small mb-1">Dry Cat Food</p>
+    <p class="fw-semibold mb-1">Royal Canin Adult Dry Food</p>
+    <p class="price fw-bold text-orange">₱500.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 4 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Tasty beef wet food in easy-serve sachets to keep adult dogs hydrated and happy.">
+    <img src="pictures/products/wetdogfood1.png" alt="Yuken Beef Sachet Wet Food">
+    <p class="text-muted small mb-1">Wet Dog Food</p>
+    <p class="fw-semibold mb-1">Yukon Beef Wet Food</p>
+    <p class="price fw-bold text-orange">₱150.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 5 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Crunchy bite-sized treats made with real ingredients; great for rewarding good behavior.">
+    <img src="pictures/products/streatshalo.png" alt="Halo Meal Bites">
+    <p class="text-muted small mb-1">Treats</p>
+    <p class="fw-semibold mb-1">Halo Meal Bites</p>
+    <p class="price fw-bold text-orange">₱75.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 6 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Affordable everyday dry dog food with essential vitamins and minerals for active dogs.">
+    <img src="pictures/products/drydogfood1.png" alt="Gud Dog Food 2.5kg">
+    <p class="text-muted small mb-1">Dry Dog Food</p>
+    <p class="fw-semibold mb-1">Gud Dog Food 2.5kg</p>
+    <p class="price fw-bold text-orange">₱1,500.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 7 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Soft chews that support skin and seasonal allergy relief with omega fatty acids and botanicals.">
+    <img src="pictures/products/supplements1.png" alt="Seasonal Allergy Soft Chews">
+    <p class="text-muted small mb-1">Supplements</p>
+    <p class="fw-semibold mb-1">S.A Soft Chews</p>
+    <p class="price fw-bold text-orange">₱250.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 8 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Dental chews designed to help reduce plaque and tartar while freshening breath for large dogs.">
+    <img src="pictures/products/dtreatsdentastix.png" alt="Pedigree Dentastix Large">
+    <p class="text-muted small mb-1">Dental Treats</p>
+    <p class="fw-semibold mb-1">Pedigree Dentastix Large</p>
+    <p class="price fw-bold text-orange">₱115.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product 9 -->
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Complete and balanced wet dog meal with a meaty texture that picky eaters love.">
+    <img src="pictures/products/wetdogfood2.png" alt="Pedigree Wet Food">
+    <p class="text-muted small mb-1">Wet Dog Food</p>
+    <p class="fw-semibold mb-1">Pedigree Wet Food</p>
+    <p class="price fw-bold text-orange">₱550.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Savory chicken wet food formulated to support adult cats daily hydration and nutrition.">
+    <img src="pictures/products/wetcatfood2.png" alt="Whiskas Chicken Adult">
+    <p class="text-muted small mb-1">Wet Cat Food</p>
+    <p class="fw-semibold mb-1">Whiskas Chicken Adult</p>
+    <p class="price fw-bold text-orange">₱250.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Adjustable, padded harness with a secure chest clip for comfortable everyday walks.">
+    <img src="pictures/products/accdogharness.png" alt="Cocopup Dog Harness">
+    <p class="text-muted small mb-1">Accessories</p>
+    <p class="fw-semibold mb-1">Cocopup Dog Harness</p>
+    <p class="price fw-bold text-orange">₱790.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Protein-rich, biologically appropriate kibble made from fresh regional ingredients.">
+    <img src="pictures/products/drydogfood2.png" alt="Orijen Adult Dog Food">
+    <p class="text-muted small mb-1">Dry Dog Food</p>
+    <p class="fw-semibold mb-1">Orijen Adult Dog Food</p>
+    <p class="price fw-bold text-orange">₱990.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Wet formula to help maintain ideal weight without sacrificing taste; great for portion control.">
+    <img src="pictures/products/wetcatfood1.png" alt="Royal Canin Feline Weight Care">
+    <p class="text-muted small mb-1">Wet Cat Food</p>
+    <p class="fw-semibold mb-1">RC Feline Weight Care</p>
+    <p class="price fw-bold text-orange">₱325.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Flavorful chewy sticks ideal for training rewards and light snacking for dogs.">
+    <img src="pictures/products/streatsstick.png" alt="Sleeky Chewy Stick Snack (2 pack)">
+    <p class="text-muted small mb-1">Dog Treats</p>
+    <p class="fw-semibold mb-1">Sleeky Chewy Stick Snacks</p>
+    <p class="price fw-bold text-orange">₱140.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Porous textured dental sticks that clean hard to reach teeth as your dog chews.">
+    <img src="pictures/products/dtreatsdentalife.png" alt="Purina Dentalife Large">
+    <p class="text-muted small mb-1">Dental Treats</p>
+    <p class="fw-semibold mb-1">Purina Dentalife Large</p>
+    <p class="price fw-bold text-orange">₱130.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Airy, crunchy cat treats bursting with flavor; only a few calories per bite.">
+    <img src="pictures/products/dctfelixcrispies.png" alt="Purina Felix Crispies">
+    <p class="text-muted small mb-1">Cat Treats</p>
+    <p class="fw-semibold mb-1">Purina Felix Crispies</p>
+    <p class="price fw-bold text-orange">₱175.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Colorful, crunchy cat treats in mixed shapes and flavors to keep snack time fun.">
+    <img src="pictures/products/drycattreats2.png" alt="Purina Friskies Party Mix">
+    <p class="text-muted small mb-1">Cat Treats</p>
+    <p class="fw-semibold mb-1">Purina Friskies Party Mix</p>
+    <p class="price fw-bold text-orange">₱200.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Lickable creamy cat treats; perfect as a topper, reward, or hydration boost.">
+    <img src="pictures/products/wetcattreats1.png" alt="Churu Creamy Purée 3-Flavor">
+    <p class="text-muted small mb-1">Cat Treats</p>
+    <p class="fw-semibold mb-1">Churu Creamy Purée 3-Flvr</p>
+    <p class="price fw-bold text-orange">₱150.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Value pack of smooth lickable treats that make medication and bonding easier.">
+    <img src="pictures/products/wetcattreats2.png" alt="Puddonia Lickable Treat (20 Tubes)">
+    <p class="text-muted small mb-1">Cat Treats</p>
+    <p class="fw-semibold mb-1">Puddonia Lickable Treats</p>
+    <p class="price fw-bold text-orange">₱250.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Daily probiotic support to aid digestion, stool quality, and immune health.">
+    <img src="pictures/products/supplements2.png" alt="Petlab Co. Probiotic Support for Dogs">
+    <p class="text-muted small mb-1">Supplements</p>
+    <p class="fw-semibold mb-1">Petlab Co. Probiotics</p>
+    <p class="price fw-bold text-orange">₱530.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Powdered L-lysine to support respiratory and eye health in cats and kittens.">
+    <img src="pictures/products/supplements3.png" alt="Lysine Supplement Powder for Cats">
+    <p class="text-muted small mb-1">Supplements</p>
+    <p class="fw-semibold mb-1">Lysine Supplement for Cats</p>
+    <p class="price fw-bold text-orange">₱470.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Targeted probiotic blend to promote healthy digestion and regularity in cats.">
+    <img src="pictures/products/supplements4.png" alt="Digestive Probiotics for Cats">
+    <p class="text-muted small mb-1">Supplements</p>
+    <p class="fw-semibold mb-1">Digestive Probiotics</p>
+    <p class="price fw-bold text-orange">₱450.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Durable rubber donut toy for chewing and fetch; gentle on gums.">
+    <img src="pictures/products/toys2.png" alt="Donut-Shaped Pet Chew Toy">
+    <p class="text-muted small mb-1">Toys</p>
+    <p class="fw-semibold mb-1">Donut-Shaped Chew Toy</p>
+    <p class="price fw-bold text-orange">₱75.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Soft plush toy bundle with squeakers; perfect for light chewers and indoor play.">
+    <img src="pictures/products/toys3.png" alt="Plush Toys Set">
+    <p class="text-muted small mb-1">Toys</p>
+    <p class="fw-semibold mb-1">Plush Toys Set</p>
+    <p class="price fw-bold text-orange">₱190.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Interactive feather toy that encourages batting, chasing, and natural hunting play.">
+    <img src="pictures/products/toys4.png" alt="Whisker Feather Cat Toy">
+    <p class="text-muted small mb-1">Toys</p>
+    <p class="fw-semibold mb-1">Whisker Feather Cat Toy</p>
+    <p class="price fw-bold text-orange">₱150.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+  <div class="product-card text-center" data-description="Lightweight fabric mice with rattles; great for multi-cat homes and endless pouncing.">
+    <img src="pictures/products/toys1.png" alt="Mouse Toys (Set of 10)">
+    <p class="text-muted small mb-1">Toys</p>
+    <p class="fw-semibold mb-1">Mouse Toys (Set of 10)</p>
+    <p class="price fw-bold text-orange">₱100.00</p>
+    <div class="product-actions">
+      <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+      <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+          <!-- Pagination -->
+          <nav id="pagination" class="d-flex justify-content-center align-items-center mt-4" aria-label="Product pagination"></nav>
+        </main>
       </div>
     </div>
   </section>
 
-
-   <section class="advertisement">
-<div id="carouselExample" class="carousel slide">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="pictures/about1.jpg" class="d-block w-100" alt="...">
+  <!-- RANDOM REVIEWS SECTION -->
+  <section class="py-5">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="fw-bold mb-0">Recent Reviews</h3>
+      </div>
+      <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000" data-bs-wrap="true">
+        <div class="carousel-inner" id="reviewsCarouselInner">
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div>
-    <div class="carousel-item">
-      <img src="pictures/about2.jpg" class="d-block w-100" alt="...">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-   </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  </section>
 
 
   <!--- FOOTER --->
@@ -110,7 +600,7 @@
     <div class="footer-left">
     <img src="pictures/logotransparent.png" alt="PawTopia logo" class="footer-logo">
     <p>If you have any questions, please <br>contact us at 
-      <a href="mailto:support@example.com">support@example.com</a></p>
+  <a href="https://matias.me/nsfw">pawtopia@example.com</a></p>
       <div class="social-icons">
         <a href="https://x.com/?lang=en">
           <img src="pictures/twittard.png" alt="X">
@@ -125,15 +615,15 @@
           <img src="pictures/linkedin.png" alt="LinkedIn">
         </a>
       </div>
-    <p>&copy; 2025 PawTopia. All rights reserved.</p>
+    <p>&copy; 2025 Pawtopia. All rights reserved.</p>
     </div>
 
     <div class="footer-right">
         <div class="footer-column">
           <h3>Shop now</h3>
           <ul>
-            <li><a href="#">Dog</a></li>
-            <li><a href="#">Cat</a></li>
+            <li><a href="products.html?category=dog">Dog</a></li>
+            <li><a href="products.html?category=cat">Cat</a></li>
           </ul>
         </div>
         
@@ -149,5 +639,6 @@
 </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   <script src="script.js"></script>
+  <script src="scriptproducts.js"></script>
 </body>
 </html>
