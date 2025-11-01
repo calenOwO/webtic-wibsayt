@@ -461,36 +461,6 @@ nav ul li a:hover {
   max-width: 300px;
 }
 
-/*BELONG TO HERO*/
-button {
-  background-color: #1E1E1E;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.shop-btn {
-  background: #1E1E1E;
-  color: white;
-}
-
-.scroll-btn {
-  background-color: #1E1E1E;
-  color: white;
-}
-
-
-.learn-more {
-  background-color: #1E1E1E;
-  color: white;
-}
-
-.login-btn {
-  background: #1E1E1E;
-  color: white;
-}
-
-
 .footer p,
 .footer-content p {
   margin-left: 10px;
@@ -928,28 +898,74 @@ button {
       height: 100px;
     }
 
-    .footer {
-      padding: 40px 20px 20px;
-    }
+  /*Footer*/
+  .footer {
+    padding: 25px 20px;
+  }
 
-    .footer-content {
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
+  .footer-content {
+    flex-direction: column;
+    gap: 25px;
+    align-items: flex-start;
+  }
 
-    .footer-logo {
-      height: 50px;
-    }
+  .footer-left {
+    width: 100%;
+  }
 
-    .social-icons img {
-      height: 25px;
-      width: 25px;
-    }
+  .footer-logo {
+    height: 40px;
+    margin-bottom: 15px;
+  }
 
-    .footer-right {
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
+  .footer-content p {
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .footer-description {
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 15px 0;
+  }
+
+  .social-icons {
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .social-icons img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .copyright {
+    margin-top: 15px;
+    font-size: 11px;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+  }
+
+  .footer-column h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .footer-column ul li {
+    margin-bottom: 8px;
+  }
+
+  .footer-column ul li a {
+    font-size: 12px;
+  }
+
+  .footer-description a {
+    word-break: break-word;
+  }
   }
 
   /* Mobile S (up to 425px) */

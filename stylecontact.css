@@ -238,13 +238,12 @@ nav ul li a:hover {
   margin: 0 auto;
 }
 
-.faq-title {
-  text-align: center;
+.faq-subtitle {
   font-size: 1.8rem;
-  color: #333;
+  color: #1E1E1E;
   margin-bottom: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 4px;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
 
 .faq-container {
@@ -948,6 +947,24 @@ nav ul li a:hover {
     padding: 0.9rem 1.5rem;
     font-size: 0.95rem;
   }
+
+  .review-card {
+  flex: 1 1 250px;
+  min-width: 250px;
+  max-width: 280px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+}
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
   /*Footer*/
   .footer {

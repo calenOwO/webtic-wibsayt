@@ -270,12 +270,12 @@ nav ul li a:hover {
 
 /* Base height for desktop (~1% less than previous) */
 .advertisement .carousel .carousel-item {
-  height: 576px; /* was 582px */
+  height: 800px; /* was 582px */
 }
 
 .advertisement .carousel .carousel-item img {
   width: 100%;
-  height: 100%;
+  height: 800px;
   object-fit: cover;   /* Crop to fill, keeps structure stable */
   object-position: center;
   display: block;
@@ -311,7 +311,7 @@ nav ul li a:hover {
   padding: 15px;
   transition: all 0.2s ease-in-out;
   background: #fff;
-  border: 1px solid black;
+  border: 1px solid #e0e0e0;;
 }
 
 .product-card:hover {
@@ -326,8 +326,9 @@ nav ul li a:hover {
   margin-bottom: 10px;
 }
 
+
 .price {
-  font-size: 1rem;
+  font-size: 16px;
   margin-bottom: 8px;
 }
 
@@ -684,8 +685,12 @@ mark.search-highlight {
     padding: 11px;
     font-size: 15px;
   }
+  /*Product Page*/
+    .carousel-item img {
+    max-height: 450px;
+  }
 
-  /*Product Content (wala pa)*/
+
 
   /*Footer*/
   .footer{
@@ -842,7 +847,12 @@ mark.search-highlight {
     padding: 10px;
   }
 
-  /*Product Content (wala pa)*/
+  /*Product Content*/
+  .carousel-item img {
+    max-height: 300px;
+  }
+
+  
 
   /*Footer*/
     .footer {

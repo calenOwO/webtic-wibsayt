@@ -138,68 +138,7 @@ try {
     });
   }
 
-// ================= Best Sellers carousel: 1 item per slide on phones =================
-(function responsiveBestSellers() {
-  const carousel = document.getElementById('bestSellersCarousel');
-  if (!carousel) return; // only on homepage
-  const inner = carousel.querySelector('.carousel-inner');
-  if (!inner) return;
-
-  // Save original markup once for desktop/tablet mode restoration
-  if (!inner.dataset.originalHtml) {
-    inner.dataset.originalHtml = inner.innerHTML;
-    inner.dataset.mobileApplied = '0';
-  }
-  const isPhone = () => window.matchMedia('(max-width: 767.98px)').matches;
-
-  function buildMobileSlides() {
-    const originalHtml = inner.dataset.originalHtml || inner.innerHTML;
-    const doc = new DOMParser().parseFromString(originalHtml, 'text/html');
-    // Select all product cards from the parsed slide content
-    const cards = Array.from(doc.querySelectorAll('.product-card'));
-    if (cards.length === 0) return;
-
-    let html = '';
-    cards.forEach((card, idx) => {
-      html += `
-        <div class="carousel-item${idx === 0 ? ' active' : ''}">
-          <div class="row">
-            <div class="col-12 mb-4">${card.outerHTML}</div>
-          </div>
-        </div>`;
-    });
-    inner.innerHTML = html;
-    inner.dataset.mobileApplied = '1';
-    try {
-      if (window.bootstrap && typeof bootstrap.Carousel?.getOrCreateInstance === 'function') {
-        bootstrap.Carousel.getOrCreateInstance(carousel, { interval: 0, ride: false, wrap: true });
-      }
-    } catch (_) {}
-  }
-  function restoreDesktopSlides() {
-    if (inner.dataset.originalHtml) {
-      inner.innerHTML = inner.dataset.originalHtml;
-      inner.dataset.mobileApplied = '0';
-      try {
-        if (window.bootstrap && typeof bootstrap.Carousel?.getOrCreateInstance === 'function') {
-          bootstrap.Carousel.getOrCreateInstance(carousel, { interval: 0, ride: false, wrap: true });
-        }
-      } catch (_) {}
-    }
-  }
-  function applyMode() {
-    if (isPhone()) {
-      if (inner.dataset.mobileApplied !== '1') buildMobileSlides();
-    } else {
-      if (inner.dataset.mobileApplied === '1') restoreDesktopSlides();
-    }
-  }
-  let t;
-  function onResize() { clearTimeout(t); t = setTimeout(applyMode, 150); }
-  window.addEventListener('resize', onResize);
-  window.addEventListener('orientationchange', onResize);
-  applyMode();
-})();
+// Best Sellers carousel: keep HTML intact; mobile count handled via CSS (2 cards/slide)
 
 // ================= Product search suggestions (autocomplete across pages) =================
 (function productSearchSuggestions() {
@@ -384,6 +323,328 @@ try {
   window.addEventListener('cartUpdated', refresh);
   window.addEventListener('storage', (e) => { if (e.key === CART_KEY) refresh(); });
 })();
+
+
+
+
+
+
+// ====== BEST SELLER ADD & VIEW BUTTONS ====== //
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Cart utilities
+  const CART_KEY = 'pt-cart:v1';
+  
+  function loadCart() {
+    try { 
+      return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); 
+    } catch (_) { 
+      return []; 
+    }
+  }
+  
+  function saveCart(items) {
+    try { 
+      localStorage.setItem(CART_KEY, JSON.stringify(items)); 
+    } catch (_) {}
+    try { 
+      window.dispatchEvent(new CustomEvent('cartUpdated')); 
+    } catch (_) {}
+  }
+  
+  function parsePrice(text) {
+    const n = parseFloat(String(text).replace(/[^0-9.\-]+/g, ''));
+    return Number.isFinite(n) ? n : 0;
+  }
+  
+  function addItemToCart(item) {
+    const cart = loadCart();
+    const idx = cart.findIndex(x => x.slug === item.slug);
+    if (idx >= 0) {
+      cart[idx].qty += item.qty || 1;
+    } else {
+      cart.push({ ...item, qty: item.qty || 1 });
+    }
+    saveCart(cart);
+  }
+
+  function slugify(s) {
+    return (s || '')
+      .toString()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  // Custom Toast function
+  function showToast(productName) {
+    // Create container if it doesn't exist
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      document.body.appendChild(container);
+    }
+
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.textContent = `Added "${productName}" to cart`;
+    container.appendChild(toast);
+
+    // Animate in
+    requestAnimationFrame(() => {
+      toast.classList.add('show');
+    });
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+        // Remove container if empty
+        if (container.children.length === 0) {
+          container.remove();
+        }
+      }, 300);
+    }, 3000);
+  }
+
+  // Handle ADD TO CART button clicks in Best Sellers (supports old and new classes)
+  document.querySelectorAll('.best-sellers-section .btn-add-cart, .best-sellers-section .add-to-cart-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const card = this.closest('.product-card');
+      if (!card) return;
+      
+      const title = (card.querySelector('.fw-semibold')?.textContent
+                  || card.querySelector('.product-name')?.textContent
+                  || '').trim();
+      const priceText = (card.querySelector('.price')?.textContent
+                      || card.querySelector('.product-price')?.textContent
+                      || '').trim();
+      const price = parsePrice(priceText);
+      const img = (card.querySelector('img')?.getAttribute('src')
+                || card.querySelector('.product-image')?.getAttribute('src')
+                || '');
+      const slug = slugify(title);
+      
+      // Add to cart
+      addItemToCart({ slug, title, price, priceText, img, qty: 1 });
+      
+      // Show toast notification
+      showToast(title);
+    });
+  });
+
+  // ===== Product Detail Modal (Home page) =====
+  const modalEl = document.getElementById('productModal');
+  const imgEl = document.getElementById('pmImg');
+  const titleEl = document.getElementById('pmTitle');
+  const categoryEl = document.getElementById('pmCategory');
+  const priceEl = document.getElementById('pmPrice');
+  const descEl = document.getElementById('pmDesc');
+  const pmRatingEl = document.getElementById('pmRating');
+  const addBtn = document.getElementById('pmAddToCart');
+  let bsProductModal = null;
+  if (modalEl && window.bootstrap?.Modal) {
+    bsProductModal = new window.bootstrap.Modal(modalEl, { backdrop: true, keyboard: true });
+  }
+
+  // Ratings utilities
+  const RATING_PREFIX = 'pt-rating:';
+  const roundToHalf = (n) => Math.round(n * 2) / 2;
+  function ratingKeyFor(card) {
+    const title = (card.querySelector('.fw-semibold')?.textContent
+                || card.querySelector('.product-name')?.textContent
+                || '').trim();
+    const img = card.querySelector('img') || card.querySelector('.product-image');
+    const src = img?.getAttribute('src') || '';
+    return (title || src).toLowerCase();
+  }
+  function getOrCreateRating(key) {
+    try {
+      const saved = localStorage.getItem(RATING_PREFIX + key);
+      if (saved) return JSON.parse(saved);
+    } catch (_) {}
+    const base = 3.5 + Math.random() * 1.5; // 3.5..5.0
+    const rating = Math.min(5, roundToHalf(base));
+    const reviews = Math.floor(25 + Math.random() * 625);
+    const data = { rating, reviews };
+    try { localStorage.setItem(RATING_PREFIX + key, JSON.stringify(data)); } catch (_) {}
+    return data;
+  }
+  function renderStars(rating) {
+    const full = Math.floor(rating);
+    const half = rating - full >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    let html = '';
+    for (let i = 0; i < full; i++) html += '<i class="bi bi-star-fill"></i>';
+    if (half) html += '<i class="bi bi-star-half"></i>';
+    for (let i = 0; i < empty; i++) html += '<i class="bi bi-star"></i>';
+    return html;
+  }
+
+  function openProductModal(card) {
+    if (!bsProductModal) return;
+    const img = card.querySelector('img') || card.querySelector('.product-image');
+    const src = img?.getAttribute('src') || '';
+    const alt = img?.getAttribute('alt') || '';
+    const title = (card.querySelector('.fw-semibold')?.textContent
+                || card.querySelector('.product-name')?.textContent
+                || alt || 'Product').trim();
+    const category = (card.querySelector('p.text-muted')?.textContent
+                   || card.querySelector('.product-category')?.textContent
+                   || '').trim();
+    const price = (card.querySelector('.price')?.textContent
+                || card.querySelector('.product-price')?.textContent
+                || '').trim();
+    const desc = (card.getAttribute('data-description') || alt || `${title} — premium quality ${category.toLowerCase() || 'item'} for your pet.`).trim();
+    const key = ratingKeyFor(card);
+    const { rating, reviews } = getOrCreateRating(key);
+
+    if (imgEl) { imgEl.src = src; imgEl.alt = alt || title; }
+    if (titleEl) titleEl.textContent = title;
+    if (categoryEl) categoryEl.textContent = category;
+    if (priceEl) priceEl.textContent = price;
+    if (descEl) descEl.textContent = desc;
+    if (pmRatingEl) {
+      pmRatingEl.innerHTML = `
+        <span class="stars">${renderStars(rating)}</span>
+        <span class="rating-score">${rating.toFixed(1)}</span>
+        <span class="rating-reviews">(${reviews})</span>
+      `;
+      pmRatingEl.setAttribute('aria-label', `Rated ${rating.toFixed(1)} out of 5 with ${reviews} reviews`);
+    }
+    bsProductModal.show();
+  }
+
+  // Wire VIEW buttons to open modal (supports old and new classes)
+  document.querySelectorAll('.best-sellers-section .btn-view, .best-sellers-section .view-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const card = this.closest('.product-card');
+      if (card) openProductModal(card);
+    });
+  });
+
+  // Modal Add to Cart
+  addBtn?.addEventListener('click', () => {
+    const title = titleEl?.textContent?.trim() || 'Item';
+    const priceText = priceEl?.textContent?.trim() || '₱0.00';
+    const price = parsePrice(priceText);
+    const img = imgEl?.getAttribute('src') || '';
+    const slug = slugify(title);
+    addItemToCart({ slug, title, price, priceText, img, qty: 1 });
+    showToast(title);
+  });
+
+  // ===== Responsive Best Sellers Carousel (mobile: 1 card per slide cycling all items) =====
+  function debounce(fn, delay = 180) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), delay); }; }
+
+  function rewireBestSellers() {
+    // Re-bind Add to Cart
+    document.querySelectorAll('.best-sellers-section .btn-add-cart, .best-sellers-section .add-to-cart-btn').forEach(button => {
+      if (button.dataset.wired === '1') return;
+      button.dataset.wired = '1';
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const card = this.closest('.product-card');
+        if (!card) return;
+        const title = (card.querySelector('.fw-semibold')?.textContent || card.querySelector('.product-name')?.textContent || '').trim();
+        const priceText = (card.querySelector('.price')?.textContent || card.querySelector('.product-price')?.textContent || '').trim();
+        const price = parsePrice(priceText);
+        const img = (card.querySelector('img')?.getAttribute('src') || card.querySelector('.product-image')?.getAttribute('src') || '');
+        const slug = slugify(title);
+        addItemToCart({ slug, title, price, priceText, img, qty: 1 });
+        showToast(title);
+      });
+    });
+    // Re-bind VIEW
+    document.querySelectorAll('.best-sellers-section .btn-view, .best-sellers-section .view-btn').forEach(button => {
+      if (button.dataset.wired === '1') return;
+      button.dataset.wired = '1';
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const card = this.closest('.product-card');
+        if (card) openProductModal(card);
+      });
+    });
+  }
+
+  function setupBestSellersResponsiveCarousel() {
+    const carousel = document.getElementById('bestSellersCarousel');
+    if (!carousel) return;
+    const inner = carousel.querySelector('.carousel-inner');
+    if (!inner) return;
+
+    const isMobile = window.matchMedia('(max-width: 767.98px)').matches;
+  if (isMobile && inner.dataset.mode !== 'mobile') {
+      // Store original content once
+      if (!inner.dataset.original) inner.dataset.original = inner.innerHTML;
+
+      // Build single-card slides from all product cards across original slides
+      const tmp = document.createElement('div');
+      tmp.innerHTML = inner.dataset.original;
+      const cards = Array.from(tmp.querySelectorAll('.product-card'));
+      if (cards.length === 0) return;
+
+      inner.innerHTML = '';
+      cards.forEach((card, idx) => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item' + (idx === 0 ? ' active' : '');
+        const row = document.createElement('div');
+        row.className = 'row';
+        const col = document.createElement('div');
+        col.className = 'col-12 mb-4';
+        col.appendChild(card);
+        row.appendChild(col);
+        item.appendChild(row);
+        inner.appendChild(item);
+      });
+      inner.dataset.mode = 'mobile';
+      // Ensure first slide is active and carousel is initialized
+      const first = inner.querySelector('.carousel-item');
+      if (first && !first.classList.contains('active')) first.classList.add('active');
+      try {
+        const inst = (window.bootstrap && window.bootstrap.Carousel)
+          ? (window.bootstrap.Carousel.getInstance(carousel) || new window.bootstrap.Carousel(carousel, { interval: false }))
+          : null;
+        inst && inst.to(0);
+      } catch (_) {}
+      rewireBestSellers();
+    } else if (!isMobile && inner.dataset.mode === 'mobile') {
+      // Restore original multi-card slides
+      inner.innerHTML = inner.dataset.original || inner.innerHTML;
+      inner.dataset.mode = 'desktop';
+      // Ensure an active slide exists and carousel is initialized
+      const first = inner.querySelector('.carousel-item');
+      if (first && !first.classList.contains('active')) first.classList.add('active');
+      try {
+        const inst = (window.bootstrap && window.bootstrap.Carousel)
+          ? (window.bootstrap.Carousel.getInstance(carousel) || new window.bootstrap.Carousel(carousel, { interval: false }))
+          : null;
+        inst && inst.to(0);
+      } catch (_) {}
+      rewireBestSellers();
+    }
+  }
+
+  // Initialize and keep in sync on resize
+  setupBestSellersResponsiveCarousel();
+  window.addEventListener('resize', debounce(setupBestSellersResponsiveCarousel, 200));
+});
+
+
+
+
 
 
 

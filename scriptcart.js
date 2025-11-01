@@ -35,6 +35,147 @@
     return 0;
   }
 
+  // ===== "You may also like" dynamic recommendations =====
+  function buildRandomRecommendations() {
+    const grid = document.querySelector('.recently-viewed .products-grid');
+    if (!grid) return;
+
+    // Static catalog mirroring Products page
+    const S = [
+      { t:'Dogcat Pet Bed', c:'Supplies', p:'₱450.00', img:'pictures/products/supplies1.png', d:'Comfy, washable plush bed with raised sides.' },
+      { t:'Monello Kitten DryFood 200g', c:'Dry Cat Food', p:'₱220.00', img:'pictures/products/dfcmonello.png', d:'Balanced nutrition for kittens with DHA.' },
+      { t:'Royal Canin Adult Dry Food', c:'Dry Cat Food', p:'₱500.00', img:'pictures/products/dfcroyalcanin.png', d:'Indoor adult formula for digestion & coat.' },
+      { t:'Yukon Beef Wet Food', c:'Wet Dog Food', p:'₱150.00', img:'pictures/products/wetdogfood1.png', d:'Tasty wet food in easy-serve sachets.' },
+      { t:'Halo Meal Bites', c:'Treats', p:'₱75.00', img:'pictures/products/streatshalo.png', d:'Crunchy bite-sized treats for rewards.' },
+      { t:'Gud Dog Food 2.5kg', c:'Dry Dog Food', p:'₱1,500.00', img:'pictures/products/drydogfood1.png', d:'Everyday kibble with essential nutrients.' },
+      { t:'S.A Soft Chews', c:'Supplements', p:'₱250.00', img:'pictures/products/supplements1.png', d:'Soft chews supporting seasonal relief.' },
+      { t:'Pedigree Dentastix Large', c:'Dental Treats', p:'₱115.00', img:'pictures/products/dtreatsdentastix.png', d:'Dental chews to help reduce tartar.' },
+      { t:'Pedigree Wet Food', c:'Wet Dog Food', p:'₱550.00', img:'pictures/products/wetdogfood2.png', d:'Complete & balanced meaty wet meal.' },
+      { t:'Whiskas Chicken Adult', c:'Wet Cat Food', p:'₱250.00', img:'pictures/products/wetcatfood2.png', d:'Savory chicken wet food for adult cats.' },
+      { t:'Cocopup Dog Harness', c:'Accessories', p:'₱790.00', img:'pictures/products/accdogharness.png', d:'Adjustable padded harness for comfy walks.' },
+      { t:'Orijen Adult Dog Food', c:'Dry Dog Food', p:'₱990.00', img:'pictures/products/drydogfood2.png', d:'Protein-rich kibble with fresh ingredients.' },
+      { t:'RC Feline Weight Care', c:'Wet Cat Food', p:'₱325.00', img:'pictures/products/wetcatfood1.png', d:'Wet formula to help maintain ideal weight.' },
+      { t:'Sleeky Chewy Stick Snacks', c:'Dog Treats', p:'₱140.00', img:'pictures/products/streatsstick.png', d:'Chewy sticks ideal for training rewards.' },
+      { t:'Purina Dentalife Large', c:'Dental Treats', p:'₱130.00', img:'pictures/products/dtreatsdentalife.png', d:'Porous sticks to clean hard-to-reach teeth.' },
+      { t:'Purina Felix Crispies', c:'Cat Treats', p:'₱175.00', img:'pictures/products/dctfelixcrispies.png', d:'Airy, crunchy treats bursting with flavor.' },
+      { t:'Purina Friskies Party Mix', c:'Cat Treats', p:'₱200.00', img:'pictures/products/drycattreats2.png', d:'Colorful crunchy treats for cats.' },
+      { t:'Churu Creamy Purée 3-Flvr', c:'Cat Treats', p:'₱150.00', img:'pictures/products/wetcattreats1.png', d:'Lickable creamy treats cats love.' },
+      { t:'Puddonia Lickable Treats', c:'Cat Treats', p:'₱250.00', img:'pictures/products/wetcattreats2.png', d:'Value pack of smooth lickable treats.' },
+      { t:'Petlab Co. Probiotics', c:'Supplements', p:'₱530.00', img:'pictures/products/supplements2.png', d:'Daily probiotic support for dogs.' },
+      { t:'Lysine Supplement for Cats', c:'Supplements', p:'₱470.00', img:'pictures/products/supplements3.png', d:'Supports respiratory & eye health.' },
+      { t:'Digestive Probiotics', c:'Supplements', p:'₱450.00', img:'pictures/products/supplements4.png', d:'Targeted probiotics for cats digestion.' },
+      { t:'Donut-Shaped Chew Toy', c:'Toys', p:'₱75.00', img:'pictures/products/toys2.png', d:'Durable rubber donut for chew & fetch.' },
+      { t:'Plush Toys Set', c:'Toys', p:'₱190.00', img:'pictures/products/toys3.png', d:'Soft plush bundle with squeakers.' },
+      { t:'Whisker Feather Cat Toy', c:'Toys', p:'₱150.00', img:'pictures/products/toys4.png', d:'Interactive feather toy for chasing.' },
+      { t:'Mouse Toys (Set of 10)', c:'Toys', p:'₱100.00', img:'pictures/products/toys1.png', d:'Lightweight fabric mice with rattles.' },
+    ];
+
+    // Shuffle and pick 6 unique items
+    const pool = S.slice();
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    const pick = pool.slice(0, 6);
+
+    const html = pick.map(it => `
+      <div class="product-card text-center" data-description="${it.d.replace(/"/g,'&quot;')}">
+        <img src="${it.img}" alt="${it.t}">
+        <p class="text-muted small mb-1">${it.c}</p>
+        <p class="fw-semibold mb-1">${it.t}</p>
+        <p class="price fw-bold text-orange">${it.p}</p>
+        <div class="product-actions">
+          <button class="btn btn-outline-dark btn-sm btn-view">VIEW</button>
+          <button class="btn btn-dark btn-sm btn-add-cart">ADD TO CART</button>
+        </div>
+      </div>`).join('');
+
+    grid.innerHTML = html;
+  }
+
+  // ===== Ratings + Modal utilities for Cart page =====
+  const RATING_PREFIX = 'pt-rating:';
+  function roundToHalf(n) { return Math.round(n * 2) / 2; }
+  function getOrCreateRating(key) {
+    try {
+      const saved = localStorage.getItem(RATING_PREFIX + key);
+      if (saved) return JSON.parse(saved);
+    } catch (_) {}
+    const base = 3.5 + Math.random() * 1.5; // 3.5..5.0
+    const rating = Math.min(5, roundToHalf(base));
+    const reviews = Math.floor(25 + Math.random() * 625);
+    const data = { rating, reviews };
+    try { localStorage.setItem(RATING_PREFIX + key, JSON.stringify(data)); } catch (_) {}
+    return data;
+  }
+  function renderStars(rating) {
+    const full = Math.floor(rating);
+    const half = rating - full >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    let html = '';
+    for (let i = 0; i < full; i++) html += '<i class="bi bi-star-fill"></i>';
+    if (half) html += '<i class="bi bi-star-half"></i>';
+    for (let i = 0; i < empty; i++) html += '<i class="bi bi-star"></i>';
+    return html;
+  }
+
+  const modalEl = document.getElementById('productModal');
+  const pmImg = document.getElementById('pmImg');
+  const pmTitle = document.getElementById('pmTitle');
+  const pmCategory = document.getElementById('pmCategory');
+  const pmPrice = document.getElementById('pmPrice');
+  const pmDesc = document.getElementById('pmDesc');
+  const pmRating = document.getElementById('pmRating');
+  const pmAddToCart = document.getElementById('pmAddToCart');
+  let bsProductModal = null;
+  if (modalEl && window.bootstrap?.Modal) {
+    bsProductModal = new window.bootstrap.Modal(modalEl, { backdrop: true, keyboard: true });
+  }
+
+  function text(el, sel) { return (el.querySelector(sel)?.textContent || '').trim(); }
+  function openProductModal(card) {
+    if (!modalEl) return;
+    const img = card.querySelector('img');
+    const src = img?.getAttribute('src') || '';
+    const alt = img?.getAttribute('alt') || '';
+    const title = text(card, '.fw-semibold') || alt || 'Product';
+    const category = text(card, 'p.text-muted');
+    const price = text(card, '.price');
+    const desc = (card.getAttribute('data-description') || alt || `${title} — premium quality ${category.toLowerCase() || 'item'} for your pet.`);
+    const key = (title || src).toLowerCase();
+    const { rating, reviews } = getOrCreateRating(key);
+
+    if (pmImg) { pmImg.src = src; pmImg.alt = alt || title; }
+    if (pmTitle) pmTitle.textContent = title;
+    if (pmCategory) pmCategory.textContent = category;
+    if (pmPrice) pmPrice.textContent = price;
+    if (pmDesc) pmDesc.textContent = desc;
+    if (pmRating) {
+      pmRating.innerHTML = `
+        <span class="stars">${renderStars(rating)}</span>
+        <span class="rating-score">${rating.toFixed(1)}</span>
+        <span class="rating-reviews">(${reviews})</span>
+      `;
+      pmRating.setAttribute('aria-label', `Rated ${rating.toFixed(1)} out of 5 with ${reviews} reviews`);
+    }
+    if (bsProductModal) bsProductModal.show();
+  }
+
+  // Modal Add to Cart
+  pmAddToCart?.addEventListener('click', () => {
+    const title = pmTitle?.textContent?.trim() || 'Item';
+    const priceText = pmPrice?.textContent?.trim() || '₱ 0.00';
+    const price = parseFloat(String(priceText).replace(/[^0-9.\-]+/g, '')) || 0;
+    const img = pmImg?.getAttribute('src') || '';
+    const slug = (title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const items = loadCart();
+    const idx = items.findIndex(x => x.slug === slug);
+    if (idx >= 0) items[idx].qty += 1; else items.push({ slug, title, price, priceText, img, qty: 1 });
+    saveCart(items);
+    render();
+    try { if (typeof window.showToast === 'function') window.showToast(`Added "${title}" to cart`); } catch(_){}
+  });
+
   function render() {
     const items = loadCart();
     tbody.innerHTML = '';
@@ -109,6 +250,9 @@
     totalEl.textContent = peso(total);
     // Do not auto-fill or auto-apply coupon on render; user must click Apply
     if (checkoutBtn) checkoutBtn.disabled = false;
+
+    // After rendering rows, adjust long totals to fit without wrapping
+    try { adjustCartTotalsFont(); } catch (_) {}
   }
 
   function changeQty(slug, delta) {
@@ -191,12 +335,77 @@
     }
   };
 
-  // Add-to-cart from recently viewed widgets on this page
+  // Dynamically shrink long currency totals to avoid wrapping/misalignment
+  function adjustCartTotalsFont() {
+    const totals = tbody.querySelectorAll('.item-total');
+    totals.forEach(el => fitTextToContainer(el, 12));
+    // Also keep product price in first column tidy
+    const prices = tbody.querySelectorAll('.product-price');
+    prices.forEach(el => fitTextToContainer(el, 11));
+  }
+
+  function fitTextToContainer(el, minPx = 12) {
+    if (!el) return;
+    const td = el.closest('td') || el.parentElement;
+    if (!td) return;
+    // Reset to computed base size first
+    const base = parseFloat(window.getComputedStyle(el).fontSize) || 16;
+    el.style.fontSize = base + 'px';
+    el.style.whiteSpace = 'nowrap';
+    // Compute available width inside the cell
+    const tdStyle = window.getComputedStyle(td);
+    const pad = (parseFloat(tdStyle.paddingLeft) || 0) + (parseFloat(tdStyle.paddingRight) || 0);
+    const available = Math.max(0, td.clientWidth - pad - 4);
+    // If it still overflows, shrink until it fits or hits min
+    let size = base;
+    // Safety cap for iterations
+    let guard = 20;
+    while (el.scrollWidth > available && size > minPx && guard-- > 0) {
+      size -= 1;
+      el.style.fontSize = size + 'px';
+    }
+  }
+
+  // Re-apply on resize (debounced)
+  const debounce = (fn, d=120)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), d); }; };
+  window.addEventListener('resize', debounce(() => { try { adjustCartTotalsFont(); } catch(_){} }, 150));
+
+  // Add-to-cart & View from "You may also like" cards (match Products page structure)
+  // Build random set first so listeners bind to generated elements
+  try { buildRandomRecommendations(); } catch(_) {}
   function slugify(s){return (s||'').toString().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
+
+  // New buttons (preferred)
+  document.querySelectorAll('.recently-viewed .product-card .btn-add-cart').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const card = e.currentTarget.closest('.product-card');
+      const title = card.querySelector('.fw-semibold')?.textContent?.trim() || 'Item';
+      const priceText = card.querySelector('.price')?.textContent?.trim() || '₱ 0.00';
+      const price = parseFloat(priceText.replace(/[^0-9.\-]+/g, '')) || 0;
+      const img = card.querySelector('img')?.getAttribute('src') || '';
+      const slug = slugify(title);
+      const items = loadCart();
+      const idx = items.findIndex(x => x.slug === slug);
+      if (idx >= 0) items[idx].qty += 1; else items.push({ slug, title, price, priceText, img, qty: 1 });
+      saveCart(items);
+      render();
+      if (typeof window.showToast === 'function') window.showToast(`Added "${title}" to cart`);
+    });
+  });
+
+  document.querySelectorAll('.recently-viewed .product-card .btn-view').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const card = e.currentTarget.closest('.product-card');
+      if (card) openProductModal(card);
+    });
+  });
+
+  // Backward-compat: support any legacy .add-to-cart-btn still present
   document.querySelectorAll('.recently-viewed .product-card .add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const card = e.currentTarget.closest('.product-card');
-      const title = card.querySelector('h3')?.textContent?.trim() || 'Item';
+      const title = (card.querySelector('h3')?.textContent || card.querySelector('.fw-semibold')?.textContent || 'Item').trim();
       const priceText = card.querySelector('.price')?.textContent?.trim() || '₱ 0.00';
       const price = parseFloat(priceText.replace(/[^0-9.\-]+/g, '')) || 0;
       const img = card.querySelector('img')?.getAttribute('src') || '';
@@ -389,4 +598,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const firstPass = reviews.map(cardHTML).join('');
   // Duplicate content to enable seamless looping (CSS anim translates by 50%)
   track.innerHTML = firstPass + firstPass;
+  
+
 });
