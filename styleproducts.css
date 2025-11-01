@@ -245,6 +245,19 @@ nav ul li a:hover {
   margin-bottom: 8px;
 }
 
+/* Brand color for checkboxes in the Filters (override Bootstrap blue) */
+.form-check-input {
+  accent-color: #FFAE34; /* modern browsers */
+}
+.form-check-input:checked {
+  background-color: #FFAE34; /* Bootstrap custom checkbox */
+  border-color: #FFAE34;
+}
+.form-check-input:focus {
+  border-color: #FFAE34;
+  box-shadow: 0 0 0 0.25rem rgba(255, 174, 52, 0.25);
+}
+
 .filter-title {
   background: #222;
   color: #fff;
