@@ -81,12 +81,126 @@ if (window.ResizeObserver && header) {
   } catch (_) {}
 }
 
-// Login form - just close dropdown on submit
-const loginForm = document.getElementById('loginForm');
-loginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    loginDropdown.classList.remove('active');
-});
+// ================= Simple Auth (client-side demo) =================
+(function simpleAuth() {
+  if (!loginDropdown || !userIcon) return;
+
+  // Inject lightweight styles once (works across all pages/stylesheets)
+  if (!document.getElementById('auth-inline-styles')) {
+    const style = document.createElement('style');
+    style.id = 'auth-inline-styles';
+    style.textContent = `
+      .user-badge{margin-left:8px;background:#1e1e1e;color:#fff;border-radius:12px;padding:2px 8px;font-size:12px;line-height:1;display:inline-block}
+      .auth-box{display:flex;flex-direction:column;gap:12px}
+      .auth-hello{font-weight:700;color:#111}
+      .auth-sub{font-size:12px;color:#666;margin-top:-6px}
+      .logout-link{display:inline-block;text-decoration:none;background:#ff5252;color:#fff;padding:10px 12px;border-radius:8px;text-align:center;font-weight:600}
+      .logout-link:hover{filter:brightness(0.95)}
+      .auth-error{background:#ffe8e8;color:#a40000;border:1px solid #ffbdbd;padding:8px 10px;border-radius:6px;font-size:12px}
+      .auth-actions{display:flex;gap:8px;align-items:center;justify-content:space-between}
+    `;
+    document.head.appendChild(style);
+  }
+
+  const AUTH_KEY = 'pt-auth:v1';
+
+  function getUser() {
+    try { return JSON.parse(localStorage.getItem(AUTH_KEY) || 'null'); } catch (_) { return null; }
+  }
+  function setUser(u) {
+    try { localStorage.setItem(AUTH_KEY, JSON.stringify(u)); } catch (_) {}
+    render();
+  }
+  function clearUser() {
+    try { localStorage.removeItem(AUTH_KEY); } catch (_) {}
+    render();
+  }
+
+  // Preserve original login form markup so we can restore it on logout
+  if (!loginDropdown.dataset.loginHtml) {
+    loginDropdown.dataset.loginHtml = loginDropdown.innerHTML;
+  }
+
+  // Add/refresh badge near the user icon
+  function setBadge(name) {
+    const parent = userIcon.closest('.user-container') || userIcon.parentElement;
+    if (!parent) return;
+    let badge = parent.querySelector('.user-badge');
+    if (!name) {
+      if (badge) badge.remove();
+      return;
+    }
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'user-badge';
+      parent.appendChild(badge);
+    }
+    badge.textContent = String(name);
+  }
+
+  function wireLoginForm(root) {
+    const form = root.querySelector('#loginForm');
+    if (!form) return;
+    const u = root.querySelector('#username');
+    const p = root.querySelector('#password');
+    const err = document.createElement('div');
+    err.className = 'auth-error';
+    err.style.display = 'none';
+    err.textContent = 'Invalid username or password.';
+    form.appendChild(err);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = (u?.value || '').trim();
+      const pass = p?.value || '';
+      if (user === 'user' && pass === '123') {
+        // Demo: accept only these credentials
+        err.style.display = 'none';
+        setUser({ username: 'user', displayName: 'user' });
+        // Keep dropdown open to show greeting right away
+        loginDropdown.classList.add('active');
+      } else {
+        err.style.display = 'block';
+      }
+    });
+  }
+
+  function renderLoggedIn(u) {
+    setBadge(u?.displayName || u?.username || 'User');
+    loginDropdown.innerHTML = `
+      <div class="auth-box">
+        <div>
+          <div class="auth-hello">Hi, ${(u?.displayName || u?.username || 'User')} 👋</div>
+          <div class="auth-sub">You're signed in.</div>
+        </div>
+        <div class="auth-actions">
+          <a href="#" id="logoutLink" class="logout-link" role="button">Logout</a>
+        </div>
+      </div>`;
+    const logout = loginDropdown.querySelector('#logoutLink');
+    logout?.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearUser();
+      // Keep dropdown visible to show the login form again
+      loginDropdown.classList.add('active');
+    });
+  }
+
+  function renderLoggedOut() {
+    setBadge(null);
+    loginDropdown.innerHTML = loginDropdown.dataset.loginHtml || loginDropdown.innerHTML;
+    wireLoginForm(loginDropdown);
+  }
+
+  function render() {
+    const u = getUser();
+    if (u) renderLoggedIn(u); else renderLoggedOut();
+  }
+
+  // Initial render and also react to storage changes across tabs
+  render();
+  window.addEventListener('storage', (e) => { if (e.key === AUTH_KEY) render(); });
+})();
 
 document.querySelectorAll('.categories-container').forEach(container => {
   const wrapper = container.querySelector('.categories-wrapper');

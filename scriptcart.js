@@ -1,14 +1,19 @@
-// PawTopia - scriptcart.js (Cart page: dynamic cart table, coupon handling, checkout modal, and reviews scroller)
+  // PawTopia - scriptcart.js (Cart page: dynamic cart table, coupon handling, checkout modal, and reviews scroller)
 // ========= Dynamic Cart (table-based) =========
 (function() {
   const CART_KEY = 'pt-cart:v1';
-  const COUPON_CODE = 'B3B0T4CT37';
-  const COUPON_DISCOUNT_RATE = 0.99; // 99% off as requested
+  // Supported coupons: code -> discount rate (as fraction of subtotal)
+  // Keep existing 99% off code and add new 1% off code per request
+  const COUPONS = {
+    'B3B0T4CT37': 0.99, // 99% OFF
+    '1L0V3UC': 0.01     // 1% OFF
+  };
   const tbody = document.getElementById('cartTbody');
   const subtotalEl = document.getElementById('subtotal');
   const discountEl = document.getElementById('discount');
   const totalEl = document.getElementById('total');
   const couponInputEl = document.getElementById('couponInput');
+  const couponSuggestionsEl = document.getElementById('couponSuggestions');
   const checkoutBtn = document.querySelector('.checkout-btn');
 
   // Keep coupon application in-memory only for this session and page load
@@ -26,13 +31,11 @@
     return `₱ ${num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
   function computeDiscount(subtotal) {
-    const code = appliedCoupon;
+    const code = appliedCoupon?.toUpperCase();
     if (!code) return 0;
-    // Only the specific code applies a flat 10% off
-    if (code.toUpperCase() === COUPON_CODE) {
-      return Math.max(0, Math.round(subtotal * COUPON_DISCOUNT_RATE * 100) / 100);
-    }
-    return 0;
+    const rate = COUPONS[code];
+    if (!rate) return 0;
+    return Math.max(0, Math.round(subtotal * rate * 100) / 100);
   }
 
   // ===== "You may also like" dynamic recommendations =====
@@ -183,7 +186,12 @@
       const tr = document.createElement('tr');
       const td = document.createElement('td');
       td.colSpan = 4;
-      td.innerHTML = '<div class="text-center py-4">Your cart is empty. <a class="continue-shopping-link" href="products.html">Continue shopping</a></div>';
+      td.innerHTML = `
+        <div class="cart-empty">
+          <img src="pictures/puscat.gif" alt="Your cart is empty" class="cart-empty-gif"/>
+          <div class="empty-text">Your cart is empty.</div>
+          <a class="continue-shopping-link" href="products.html">Continue shopping</a>
+        </div>`;
       tr.appendChild(td);
       tbody.appendChild(tr);
       subtotalEl.textContent = '₱ 0.00';
@@ -277,10 +285,13 @@
       if (typeof window.showToast === 'function') window.showToast('Enter a coupon code.');
       return;
     }
-    if (raw.toUpperCase() === COUPON_CODE) {
-      appliedCoupon = COUPON_CODE;
+    const code = raw.toUpperCase();
+    const rate = COUPONS[code];
+    if (rate) {
+      appliedCoupon = code;
       render();
-      if (typeof window.showToast === 'function') window.showToast('Coupon applied: 99% off');
+      const pct = Math.round(rate * 100);
+      if (typeof window.showToast === 'function') window.showToast(`Coupon applied: ${pct}% off`);
     } else {
       appliedCoupon = '';
       render();
@@ -297,6 +308,39 @@
     render();
     if (typeof window.showToast === 'function') window.showToast('Coupon removed');
   };
+
+  // ===== Coupon suggestions dropdown behavior =====
+  (function wireCouponSuggestions(){
+    if (!couponInputEl || !couponSuggestionsEl) return;
+    const show = () => couponSuggestionsEl.classList.add('show');
+    const hide = () => couponSuggestionsEl.classList.remove('show');
+
+    // Show suggestions on focus and click
+    couponInputEl.addEventListener('focus', show);
+    couponInputEl.addEventListener('click', show);
+
+    // Hide on Escape key
+    couponInputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hide();
+    });
+
+    // Click outside to close
+    document.addEventListener('click', (e) => {
+      const within = e.target === couponInputEl || couponSuggestionsEl.contains(e.target);
+      if (!within) hide();
+    });
+
+    // Click on an item fills input and applies coupon
+    couponSuggestionsEl.querySelectorAll('.coupon-suggestion-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const code = item.getAttribute('data-code') || '';
+        if (couponInputEl) couponInputEl.value = code;
+        hide();
+        // auto-apply for convenience
+        try { window.applyCoupon(); } catch(_) {}
+      });
+    });
+  })();
   window.checkout = function checkout() {
     // Show a simple Bootstrap modal saying checked out
     let modalEl = document.getElementById('checkoutModal');

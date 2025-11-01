@@ -365,6 +365,7 @@ nav ul li a:hover {
 .coupon-input-group {
   display: flex;
   gap: 10px;
+  position: relative; /* for absolute suggestions dropdown */
 }
 
 .coupon-input-group input {
@@ -372,6 +373,56 @@ nav ul li a:hover {
   padding: 12px;
   border: 1px solid #ddd;
   font-size: 14px;
+}
+
+/* Coupon input focus glow in brand orange (#FFAE43) */
+.coupon-input-group input:focus {
+  border-color: #FFAE43;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 174, 67, 0.35);
+}
+
+/* Suggestions dropdown for coupon codes */
+.coupon-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  z-index: 5;
+  display: none;
+}
+
+.coupon-suggestions.show { display: block; }
+
+.coupon-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #1e1e1e;
+}
+
+.coupon-suggestion-item:hover,
+.coupon-suggestion-item:focus {
+  background: rgba(255, 174, 67, 0.12);
+}
+
+.coupon-suggestion-item .code {
+  font-weight: 700;
+}
+
+.coupon-suggestion-item .desc {
+  color: #FFAE43;
+  font-weight: 600;
 }
 
 .apply-btn {
@@ -566,6 +617,28 @@ nav ul li a:hover {
 .continue-shopping-link:hover {
   text-decoration: underline;
   color: #FFAE34 !important;
+}
+
+/* Empty cart state */
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 12px;
+  text-align: center;
+}
+.cart-empty-gif {
+  max-width: 220px;
+  width: 60%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.95;
+}
+.cart-empty .empty-text {
+  color: #333;
+  font-weight: 600;
 }
 
 /* Match product actions/buttons from products page */

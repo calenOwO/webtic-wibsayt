@@ -43,8 +43,8 @@
         <img src="pictures/account.png" id="userIcon" alt="User">
         <div class="login-dropdown" id="loginDropdown">
           <form id="loginForm">
-            <input type="text" placeholder="Username" id="username">
-            <input type="password" placeholder="Password" id="password">
+            <input type="text" placeholder="Username *user" id="username">
+            <input type="password" placeholder="Password *123" id="password">
             <button type="submit" class="login-btn">Login</button>
           </form>
         </div>
@@ -85,6 +85,19 @@
           <h3 class="section-title">Coupon</h3>
           <div class="coupon-input-group">
             <input type="text" placeholder="Enter coupon code" id="couponInput">
+            <!-- Inline coupon suggestions: shown when the input is focused/clicked -->
+            <ul id="couponSuggestions" class="coupon-suggestions" role="listbox" aria-label="Available coupons">
+              <li role="option" data-code="B3B0T4CT37" class="coupon-suggestion-item">
+                <span class="code">B3B0T4CT37</span>
+                <span class="dash"> — </span>
+                <span class="desc">99% OFF</span>
+              </li>
+              <li role="option" data-code="1L0V3UC" class="coupon-suggestion-item">
+                <span class="code">1L0V3UC</span>
+                <span class="dash"> — </span>
+                <span class="desc">1% OFF</span>
+              </li>
+            </ul>
             <button class="apply-btn" onclick="applyCoupon()">APPLY</button>
             <button class="apply-btn" style="background:#333" onclick="removeCoupon()">REMOVE</button>
           </div>

@@ -45,8 +45,8 @@
         <img src="pictures/account.png" id="userIcon" alt="User">
         <div class="login-dropdown" id="loginDropdown">
           <form id="loginForm">
-            <input type="text" placeholder="Username" id="username">
-            <input type="password" placeholder="Password" id="password">
+            <input type="text" placeholder="Username *user" id="username">
+            <input type="password" placeholder="Password *123" id="password">
             <button type="submit" class="login-btn">Login</button>
           </form>
         </div>
@@ -345,11 +345,21 @@
         style="color: #FFAE43">POPULAR</span> <span style="color: black">BRANDS</span></h2>
 
     <div class="brand-grid">
-      <div class="brand-box"><img src="pictures/pedigreelogo.png" alt="Pedigree Logo"></div>
-      <div class="brand-box"><img src="pictures/royalcaninlogo.png" alt="Royal Canin Logo"></div>
-      <div class="brand-box"><img src="pictures/purinalogo.png" alt="Purina Logo"></div>
-      <div class="brand-box"><img src="pictures/whiskaslogo.png" alt="Whiskas Logo"></div>
-      <div class="brand-box"><img src="pictures/orijenlogo.png" alt="Orijens Plus"></div>
+      <div class="brand-box" role="button" tabindex="0" onclick="window.location.href='products.html?brand=pedigree'">
+        <img src="pictures/pedigreelogo.png" alt="Pedigree Logo">
+      </div>
+      <div class="brand-box" role="button" tabindex="0" onclick="window.location.href='products.html?brand=royal-canin'">
+        <img src="pictures/royalcaninlogo.png" alt="Royal Canin Logo">
+      </div>
+      <div class="brand-box" role="button" tabindex="0" onclick="window.location.href='products.html?brand=purina'">
+        <img src="pictures/purinalogo.png" alt="Purina Logo">
+      </div>
+      <div class="brand-box" role="button" tabindex="0" onclick="window.location.href='products.html?brand=whiskas'">
+        <img src="pictures/whiskaslogo.png" alt="Whiskas Logo">
+      </div>
+      <div class="brand-box" role="button" tabindex="0" onclick="window.location.href='products.html?brand=orijen'">
+        <img src="pictures/orijenlogo.png" alt="Orijen Logo">
+      </div>
     </div>
   </section>
 

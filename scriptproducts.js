@@ -214,7 +214,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const isSupplements = /supplement/i.test(typeText);
     const isDry = /\bdry\b/i.test(typeText) || /\bdry\b/i.test(hay);
     const isWet = /\bwet\b/i.test(typeText) || /\bwet\b/i.test(hay);
-    return { typeText, title, alt, hasCat, hasDog, isFood, isTreats, isAccessories, isSupplies, isToys, isSupplements, isDry, isWet };
+    // Brand detection from known list (normalize to key)
+    const brandMap = [
+      { key: 'pedigree', rx: /\bpedigree\b/i },
+      { key: 'royal canin', rx: /(\broyal\s*canin\b|\brc\b\s*(?:feline|canin)?)/i },
+      { key: 'purina', rx: /\bpurina\b/i },
+      { key: 'whiskas', rx: /\bwhiskas\b/i },
+      { key: 'orijen', rx: /\borijen\b/i }
+    ];
+    let brandKey = '';
+    for (const b of brandMap) { if (b.rx.test(hay)) { brandKey = b.key; break; } }
+    return { typeText, title, alt, hasCat, hasDog, isFood, isTreats, isAccessories, isSupplies, isToys, isSupplements, isDry, isWet, brandKey };
   }
 
   function idMatches(id, meta) {
@@ -264,6 +274,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedTypes = Array.from(document.querySelectorAll('#productTypeCollapse input[type="checkbox"]:checked'))
       .map(checkbox => checkbox.id.toLowerCase());
 
+    // Get Brand selections (inside Brand collapse)
+    const selectedBrands = Array.from(document.querySelectorAll('#brandCollapse input[type="checkbox"]:checked'))
+      .map(cb => cb.id)
+      .map(id => ({ brand1: 'pedigree', brand2: 'royal canin', brand3: 'purina', brand4: 'whiskas', brand5: 'orijen' }[id]))
+      .filter(Boolean);
+
     // Read price range
     const fromInput = document.getElementById('priceFrom');
     const toInput = document.getElementById('priceTo');
@@ -283,6 +299,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // If no filters selected, match all by type
       const matchesType = selectedTypes.length === 0 || selectedTypes.some(id => idMatches(id, meta));
+      // Brand: if none selected, pass-through; else requires meta.brandKey match
+      const matchesBrand = selectedBrands.length === 0 || (meta.brandKey && selectedBrands.includes(meta.brandKey));
       const matchesMin = min == null || price >= min;
       const matchesMax = max == null || price <= max;
 
@@ -291,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const matchesQuery = q === '' || [meta.title, meta.typeText, meta.alt, (card.getAttribute('data-description') || '').toLowerCase()]
         .some(text => text.includes(q));
 
-      const visible = matchesType && matchesMin && matchesMax && matchesQuery;
+      const visible = matchesType && matchesBrand && matchesMin && matchesMax && matchesQuery;
       // Mark filtering result; pagination decides visibility
       card.parentElement.dataset.filtered = visible ? '1' : '0';
 
@@ -343,6 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     const q = (headerSearchInput?.value || '').trim();
     const hasAnyFilters = Array.from(document.querySelectorAll('#productTypeCollapse input[type="checkbox"]:checked')).length > 0
+      || Array.from(document.querySelectorAll('#brandCollapse input[type="checkbox"]:checked')).length > 0
       || (document.getElementById('priceFrom')?.value || '') !== ''
       || (document.getElementById('priceTo')?.value || '') !== ''
       || q !== '';
@@ -367,6 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function clearAllFilters() {
     document.querySelectorAll('#productTypeCollapse input[type="checkbox"]:checked').forEach(cb => cb.checked = false);
+    document.querySelectorAll('#brandCollapse input[type="checkbox"]:checked').forEach(cb => cb.checked = false);
     const pf = document.getElementById('priceFrom');
     const pt = document.getElementById('priceTo');
     if (pf) pf.value = '';
@@ -419,6 +439,13 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('Found type checkboxes:', filterCheckboxes.length); // Debugging
   
   filterCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', filterProducts);
+  });
+
+  // Brand filter checkboxes
+  const brandCheckboxes = document.querySelectorAll('#brandCollapse input[type="checkbox"]');
+  console.log('Found brand checkboxes:', brandCheckboxes.length);
+  brandCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', filterProducts);
   });
 
@@ -675,10 +702,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Deep-link handling for ?product=slug, ?q=query, ?category=dog|cat and ?filter=<type>
   try {
     const params = new URLSearchParams(window.location.search);
-    const qParam = params.get('q');
+  const qParam = params.get('q');
     const slugParam = params.get('product');
     const categoryParam = (params.get('category') || '').trim().toLowerCase();
     const filterParam = (params.get('filter') || '').trim().toLowerCase();
+  const brandParam = (params.get('brand') || '').trim().toLowerCase();
     if (qParam && headerSearchInput) {
       headerSearchInput.value = qParam;
       filterProducts();
@@ -785,6 +813,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const collapse = document.getElementById('productTypeCollapse');
         if (collapse && !collapse.classList.contains('show')) {
           collapse.classList.add('show');
+        }
+        filterProducts();
+        scrollToProductsSection();
+      }
+    }
+
+    // Handle brand deep-link: brand=pedigree|royal-canin|purina|whiskas|orijen
+    if (brandParam) {
+      const mapBrand = {
+        'pedigree': 'brand1',
+        'royal canin': 'brand2',
+        'royal-canin': 'brand2',
+        'purina': 'brand3',
+        'whiskas': 'brand4',
+        'orijen': 'brand5'
+      };
+      const brandCheckboxId = mapBrand[brandParam] || mapBrand[brandParam.replace(/\s+/g, ' ')];
+      if (brandCheckboxId) {
+        // Uncheck all brand filters first
+        document.querySelectorAll('#brandCollapse input[type="checkbox"]:checked')
+          .forEach(cb => { cb.checked = false; });
+        const bcb = document.getElementById(brandCheckboxId);
+        if (bcb) bcb.checked = true;
+        const bCollapse = document.getElementById('brandCollapse');
+        if (bCollapse && !bCollapse.classList.contains('show')) {
+          bCollapse.classList.add('show');
         }
         filterProducts();
         scrollToProductsSection();
