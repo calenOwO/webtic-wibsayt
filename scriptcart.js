@@ -545,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // Tailored comment pools (lightweight)
-  const users = ['Alex M.', 'Jamie S.', 'Renee T.', 'Chris D.', 'Sam P.', 'Jordan K.', 'Taylor R.', 'Morgan L.', 'Casey H.', 'Avery B.', 'Pat G.', 'Drew C.'];
+  const users = ['Andrew E.', 'Marco M.', 'Aljur A.', 'Dingdong D.', 'Kiko B.', 'Bebot B.', 'Jammy C.', 'Alice G.', 'Sara D.', 'Sarah G.', 'Justin N .', 'Pablo E.'];
   const pools = {
     catFood: [
       'My cat finishes every bowl now.',

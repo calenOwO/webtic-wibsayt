@@ -920,10 +920,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const productCards = Array.from(document.querySelectorAll('.product-card'));
     if (productCards.length === 0) return;
 
-    // Sample user names
+    // Sample user names (customized)
     const users = [
-      'Alex M.', 'Jamie S.', 'Renee T.', 'Chris D.', 'Sam P.', 'Jordan K.',
-      'Taylor R.', 'Morgan L.', 'Casey H.', 'Avery B.', 'Pat G.', 'Drew C.'
+      'Andrew E.', 'Marco M.', 'Aljur A.', 'Dingdong D.', 'Kiko B.', 'Bebot B.',
+      'Jammy C.', 'Alice G.', 'Sara D.', 'Sarah G.', 'Justin N .', 'Pablo E.'
     ];
     // Category-tailored comment pools
     const commentPools = {
